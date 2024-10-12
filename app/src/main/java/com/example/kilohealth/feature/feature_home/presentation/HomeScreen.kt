@@ -53,6 +53,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -69,7 +70,8 @@ import kotlin.math.roundToInt
 
 @Composable
 fun HomeScreen(
-    setEvent: (HomeContract.Event) -> Unit
+    setEvent: (HomeContract.Event) -> Unit,
+    uiState: HomeContract.State
 ) {
     val pagerState = rememberPagerState {
         FakeData.pagerFakeData.size
@@ -208,7 +210,7 @@ fun HomeScreen(
                                         modifier = Modifier.fillMaxSize()
                                     )
                                 }
-                                XText(text ="test${valCate.label}")
+                                XText(text = "test${valCate.label}")
                             }
                         }
                     }
@@ -225,7 +227,8 @@ fun HomeScreen(
                         columns = GridCells.Fixed(2),
                         userScrollEnabled = false,
                     ) {
-                        items(5) {
+                        items(uiState.homeBlogState.size) {
+                            val grid = uiState.homeBlogState[it]
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -251,8 +254,12 @@ fun HomeScreen(
 
                                         )
                                     }
-                                    XText(text = "What is love")
-                                    XText(text = "Did you not scroll down, man? Brother?")
+                                    XText(text = grid.name ?: "")
+                                    XText(
+                                        text = grid.description ?: "",
+                                        maxLines = 4,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                 }
                             }
                         }
@@ -267,7 +274,10 @@ fun HomeScreen(
 @Preview
 @Composable
 private fun previewHome() {
-    HomeScreen {
+    HomeScreen(
+        setEvent = {
 
-    }
+        },
+        uiState = HomeContract.State()
+    )
 }

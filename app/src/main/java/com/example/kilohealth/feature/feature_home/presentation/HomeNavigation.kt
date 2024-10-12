@@ -1,6 +1,7 @@
 package com.example.kilohealth.feature.feature_home.presentation
 
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.kilohealth.navigation.Screen
@@ -14,6 +15,7 @@ fun NavGraphBuilder.toHomeRoute(
     route = Screen.HOme.route,
     content = {
         val vm: HomeVM = koinViewModel()
+        val uiState = vm.state.collectAsState()
         LaunchedEffect(Unit) {
             vm.effect.onEach {
                 when (it) {
@@ -23,6 +25,6 @@ fun NavGraphBuilder.toHomeRoute(
                 }
             }.collect()
         }
-        HomeScreen(setEvent = vm::onEvent)
+        HomeScreen(setEvent = vm::onEvent ,uiState.value )
     }
 )

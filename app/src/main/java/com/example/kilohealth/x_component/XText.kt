@@ -48,4 +48,5 @@ fun XText(
     maxLines = maxLines,
     minLines = minLines,
     onTextLayout = onTextLayout,
+
 )

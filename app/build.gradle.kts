@@ -71,6 +71,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.logging.interceptor)
+
     //Koin
 
     implementation(libs.koin.android)
