@@ -1,6 +1,8 @@
 package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
 import android.util.Log
+import android.util.Patterns
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,9 +27,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,16 +50,23 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+import coil3.request.error
+import coil3.request.placeholder
+import coil3.size.Size
 import com.example.kilohealth.R
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
+import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
-import com.example.kilohealth.x_component.XTopBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     setEvent: (HomeContract.Event) -> Unit,
@@ -73,12 +85,24 @@ fun HomeScreen(
     }
     Scaffold(
         topBar = {
-            XTopBar()
+            TopAppBar(
+                title = { },
+                actions = {
+                    XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
+                },
+                navigationIcon = {
+                    XIcon(
+                        icon = painterResource(id = R.drawable.ic_health),
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            )
         }
     ) {
         LazyColumn(
             modifier = Modifier
                 .padding(it)
+                .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
                 .padding(horizontal = XPadding.extraLarge)
                 .padding(bottom = XPadding.extraLarge * 5)
@@ -218,6 +242,7 @@ fun HomeScreen(
                     ) {
                         items(uiState.homeBlogState.size) {
                             val grid = uiState.homeBlogState[it]
+
                             Box(
                                 modifier = Modifier
                                     .padding(
@@ -237,9 +262,21 @@ fun HomeScreen(
                                 ) {
                                     Box(
                                     ) {
+//                                        XImageNetwork(url ="http://13.212.176.85:5100/storage/v1-4.jpg")
+////                                        AsyncImage(
+////                                            model = "http://13.212.176.85:5100/storage/v1-4.jpg",
+////                                            contentDescription =null,
+////                                            modifier = Modifier
+////                                                .height(75.dp)
+////                                                .fillMaxWidth()
+////                                        )
+
                                         Image(
                                             painter = rememberAsyncImagePainter(
-                                                model = grid.thumbnail
+                                                model = ImageRequest.Builder(LocalContext.current)
+                                                    .data("http://13.212.176.85:5100/storage/v1-4.jpg")
+                                                    .size(Size.ORIGINAL)
+                                                    .build()
                                             ),
                                             contentDescription = null,
                                             contentScale = ContentScale.Fit,
@@ -247,6 +284,7 @@ fun HomeScreen(
                                                 .height(75.dp)
                                                 .fillMaxWidth()
                                         )
+
                                     }
                                     XText(text = grid.name)
                                     XText(
@@ -263,6 +301,9 @@ fun HomeScreen(
         }
     }
 }
+
+
+
 
 
 @Preview

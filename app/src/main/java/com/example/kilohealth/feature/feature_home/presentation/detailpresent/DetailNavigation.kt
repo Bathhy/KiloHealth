@@ -2,6 +2,7 @@ package com.example.kilohealth.feature.feature_home.presentation.detailpresent
 
 import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
@@ -20,6 +21,7 @@ fun NavGraphBuilder.toDetailRoute(
     route = Screen.Detail(id).route,
     content = {
         val detailVM: DetailVM = koinViewModel()
+        val state = detailVM.state.collectAsState()
         LaunchedEffect(Unit) {
             detailVM.effect.onEach {
                 when (it) {
@@ -30,7 +32,8 @@ fun NavGraphBuilder.toDetailRoute(
             }.collect()
         }
         DetailScreen(
-            setEvent = detailVM::onEvent
+            setEvent = detailVM::onEvent,
+            state.value
         )
     }
 )

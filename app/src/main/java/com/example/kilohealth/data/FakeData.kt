@@ -1,6 +1,5 @@
 package com.example.kilohealth.data
 
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.kilohealth.R
@@ -29,8 +28,8 @@ internal object FakeData {
     )
     val pagerFakeData = listOf(
         PagerData(R.drawable.deep),
-        PagerData(R.drawable.health),
-        PagerData(R.drawable.deep), PagerData(R.drawable.health)
+        PagerData(R.drawable.ic_health),
+        PagerData(R.drawable.deep), PagerData(R.drawable.ic_health)
     )
 
     val cateFakeListData :SnapshotStateList<TabBarCategory> = mutableStateListOf(

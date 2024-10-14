@@ -71,7 +71,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //coil
-    implementation ("io.coil-kt:coil-compose:2.5.0")
+//    implementation ("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt.coil3:coil-compose:3.0.0-rc01")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.0.0-rc01")
+    //jsoup
+    implementation("org.jsoup:jsoup:1.18.1")
 
     //Retrofit
     implementation(libs.retrofit)

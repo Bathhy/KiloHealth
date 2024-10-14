@@ -38,7 +38,7 @@ internal fun ProfileScreen() {
 
     ) {
         Image(
-            painter = painterResource(id = R.drawable.health),
+            painter = painterResource(id = R.drawable.ic_health),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier

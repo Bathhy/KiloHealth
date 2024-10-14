@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetBlogListUseCase
+import com.example.kilohealth.networkconfig.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,9 +37,16 @@ class HomeVM(
     private fun getBlogList(){
         viewModelScope.launch {
             val res = getBlogListUS.invoke()
-            _state.value = _state.value.copy(
-                homeBlogState = res
-            )
+           when(res){
+               is Resource.Error -> {
+                   Log.d("err", "getBlogList:${res.error}")
+               }
+               is Resource.Success -> {
+                   _state.value = _state.value.copy(
+                       homeBlogState = res.data
+                   )
+               }
+           }
             Log.d("datat", "getBlogList:${res}")
         }
     }

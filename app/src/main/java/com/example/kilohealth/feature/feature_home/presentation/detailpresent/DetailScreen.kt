@@ -36,7 +36,8 @@ import com.example.kilohealth.x_component.XText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    setEvent: (DetailContract.Event) -> Unit
+    setEvent: (DetailContract.Event) -> Unit,
+    uiState: DetailContract.State
 ) {
     Scaffold(
         topBar = {
@@ -48,7 +49,7 @@ fun DetailScreen(
                     scrolledContainerColor = Color.Transparent,
                     actionIconContentColor = Color.White
                 ),
-                title = { XText(text = "What is Love") },
+                title = { XText(text = uiState.uiState.name) },
                 navigationIcon = {
                     XIcon(
                         icon = painterResource(id = R.drawable.ic_back),
@@ -69,7 +70,7 @@ fun DetailScreen(
             item {
                 Spacer(modifier = Modifier.height(XPadding.medium))
                 Image(
-                    painter = painterResource(id = R.drawable.health),
+                    painter = painterResource(id = R.drawable.ic_health),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
@@ -78,11 +79,11 @@ fun DetailScreen(
                 )
                 Spacer(modifier = Modifier.height(XPadding.medium))
                 XText(
-                    text = "What is Love",
+                    text = uiState.uiState.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = XFontSize.Large
                 )
-                XText(text = "Description", fontSize = XFontSize.Medium)
+                XText(text =uiState.uiState.content, fontSize = XFontSize.Medium)
                 Spacer(modifier = Modifier.height(XPadding.medium))
                 XText(
                     text = "Article By : KiloHealth", fontSize = XFontSize.Medium,
