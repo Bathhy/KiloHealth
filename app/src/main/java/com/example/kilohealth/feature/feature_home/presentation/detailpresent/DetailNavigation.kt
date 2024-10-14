@@ -1,8 +1,11 @@
-package com.example.kilohealth.feature.feature_detail.presentatio
+package com.example.kilohealth.feature.feature_home.presentation.detailpresent
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.kilohealth.navigation.Screen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -11,7 +14,10 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.toDetailRoute(
     setEffect: (DetailContract.Effect.Nav) -> Unit
 ) = composable(
-    route = Screen.Detail.route,
+    arguments = listOf(navArgument(name = "id"){
+        type = NavType.IntType
+    }),
+    route = Screen.Detail(id).route,
     content = {
         val detailVM: DetailVM = koinViewModel()
         LaunchedEffect(Unit) {

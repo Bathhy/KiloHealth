@@ -70,6 +70,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //coil
+    implementation ("io.coil-kt:coil-compose:2.5.0")
 
     //Retrofit
     implementation(libs.retrofit)

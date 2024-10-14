@@ -1,9 +1,8 @@
-package com.example.kilohealth.feature.feature_home.presentation
+package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kilohealth.feature.feature_home.data.datasource.HomeEndPoint
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetBlogListUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,9 +22,9 @@ class HomeVM(
     val effect: SharedFlow<HomeContract.Effect> = _effect.asSharedFlow()
     fun onEvent(event: HomeContract.Event) {
         when (event) {
-            HomeContract.Event.detail -> {
+            is HomeContract.Event.detail -> {
                 viewModelScope.launch {
-                    _effect.emit(HomeContract.Effect.detail)
+                    _effect.emit(HomeContract.Effect.detail(event.id))
                 }
             }
         }

@@ -11,12 +11,16 @@ enum class EnumScreen {
     DETAIL
 }
 sealed class Screen(val route:String){
-    object DetailMessage : Screen(EnumScreen.DETAIL_MESSAGE.name)
-    object HOme: Screen(EnumScreen.HOME.name)
-    object Notification : Screen(EnumScreen.NOTIFICATION.name)
-    object Message: Screen(EnumScreen.MESSAGE.name)
-    object Profile: Screen(EnumScreen.PROFILE.name)
-    object Detail: Screen(EnumScreen.DETAIL.name)
+    data object DetailMessage : Screen(EnumScreen.DETAIL_MESSAGE.name)
+    data object HOme: Screen(EnumScreen.HOME.name)
+    data object Notification : Screen(EnumScreen.NOTIFICATION.name)
+    data object Message: Screen(EnumScreen.MESSAGE.name)
+    data object Profile: Screen(EnumScreen.PROFILE.name)
+    data class Detail(val id : Int): Screen(EnumScreen.DETAIL.name+"/{id}"){
+        fun passId(id:Int):String{
+            return EnumScreen.DETAIL.name +"/$id";
+        }
+    }
 }
 object Route{
     const val ROOT = "root_graph"

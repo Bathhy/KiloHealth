@@ -1,9 +1,11 @@
-package com.example.kilohealth.feature.feature_home.presentation
+package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.kilohealth.feature.feature_home.presentation.detailpresent.DetailContract
 import com.example.kilohealth.navigation.Screen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -19,8 +21,12 @@ fun NavGraphBuilder.toHomeRoute(
         LaunchedEffect(Unit) {
             vm.effect.onEach {
                 when (it) {
-                    HomeContract.Effect.detail -> {
-                        setEffect(HomeContract.Effect.Nav.detail)
+                    is HomeContract.Effect.detail -> {
+                        val route = Screen.Detail(id = it.id)
+//                        Log.d("TAG", "toHomeRoute:${it.id}")
+                        setEffect(
+                            HomeContract.Effect.Nav.detail(route.id)
+                        )
                     }
                 }
             }.collect()

@@ -36,34 +36,38 @@ internal fun DashBoardGraph(navHostController: NavHostController) {
     val currentDestination = navBackStackEntry.value?.destination?.route
     Scaffold(
         bottomBar = {
-            BottomAppBar(
-                modifier = Modifier.height(100.dp)
-            ) {
-                NavigationBar(
+            if (FakeData.bottomNavFakeData.any {
+                    it.route == currentDestination
+                }) {
+                BottomAppBar(
+                    modifier = Modifier.height(100.dp)
                 ) {
-                    FakeData.bottomNavFakeData.forEach { bot ->
-                        NavigationBarItem(
-                            modifier = Modifier.height(90.dp),
-                            colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = healthTheme,
-                                indicatorColor = Color.Transparent
-                            ),
-                            selected =currentDestination == bot.route,
-                            onClick = {
-                            scope.launch {
-                                navHostController.navigate(bot.route) {
-                                    launchSingleTop = true
-                                }
+                    NavigationBar(
+                    ) {
+                        FakeData.bottomNavFakeData.forEach { bot ->
+                            NavigationBarItem(
+                                modifier = Modifier.height(90.dp),
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = healthTheme,
+                                    indicatorColor = Color.Transparent
+                                ),
+                                selected = currentDestination == bot.route,
+                                onClick = {
+                                    scope.launch {
+                                        navHostController.navigate(bot.route) {
+                                            launchSingleTop = true
+                                        }
 
-                            }
-                        }, icon = {
-                            XIcon(icon = painterResource(id = bot.icon))
-                        })
+                                    }
+                                }, icon = {
+                                    XIcon(icon = painterResource(id = bot.icon))
+                                })
+                        }
                     }
                 }
             }
         }
     ) {
-        RootNavGraph(navHostController = navHostController , modifier = Modifier.padding(it))
+        RootNavGraph(navHostController = navHostController, modifier = Modifier.padding(it))
     }
 }

@@ -6,12 +6,12 @@ import com.example.kilohealth.feature.feature_home.domain.model.BlogListModel
 
 fun List<BlogListResponse>?.toBlogListModel() =this?.map {
     BlogListModel(
-        id = it.id,
-        type = null,
-        name = it.name,
-        description = it.description,
-        thumbnail = it.thumbnail,
-        favorite = it.favorite,
-        createdAt = it.createdAt
+        id = it.id ?: 0,
+        type = null ?: "",
+        name = it.name ?: "Default",
+        description = it.description ?: "No Desciption",
+        thumbnail = it.thumbnail ?: "none",
+        favorite = it.favorite ?: false,
+        createdAt = it.createdAt ?: ""
     )
 }.orEmpty()

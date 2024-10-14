@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.example.kilohealth.feature.feature_detail.presentatio.DetailContract
-import com.example.kilohealth.feature.feature_detail.presentatio.toDetailRoute
-import com.example.kilohealth.feature.feature_home.presentation.HomeContract
-import com.example.kilohealth.feature.feature_home.presentation.toHomeRoute
+import com.example.kilohealth.feature.feature_home.presentation.detailpresent.DetailContract
+import com.example.kilohealth.feature.feature_home.presentation.detailpresent.toDetailRoute
+import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
+import com.example.kilohealth.feature.feature_home.presentation.homepresent.toHomeRoute
 import com.example.kilohealth.feature.message.detailmessage.presentation.DetailMessageContract
 import com.example.kilohealth.feature.message.homemessage.presentation.MessageContract
 import com.example.kilohealth.feature.message.homemessage.presentation.toDetailMessageRoute
@@ -26,8 +26,9 @@ fun RootNavGraph(navHostController: NavHostController, modifier: Modifier) {
         toHomeRoute(
             setEffect = {
                 when (it) {
-                    HomeContract.Effect.Nav.detail -> {
-                        navHostController.navigate(Screen.Detail.route)
+                    is HomeContract.Effect.Nav.detail -> {
+                        val route = Screen.Detail(id = id).passId(it.id)
+                        navHostController.navigate(route)
                     }
                 }
             }
