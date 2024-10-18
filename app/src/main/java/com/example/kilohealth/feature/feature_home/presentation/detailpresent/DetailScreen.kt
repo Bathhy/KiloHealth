@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,6 +30,7 @@ import com.example.kilohealth.R
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XFontSize
 import com.example.kilohealth.x_component.XIcon
+import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XLazyColumn
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
@@ -59,7 +61,9 @@ fun DetailScreen(
                         })
                 },
                 actions = {
-                    XIcon(icon = Icons.Default.Search, tint = Color.White)
+                    XIcon(icon = Icons.Default.Favorite, tint = Color.White, modifier = Modifier.clickable {
+                        setEvent(DetailContract.Event.fav)
+                    })
                 }
             )
         }
@@ -69,9 +73,8 @@ fun DetailScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(XPadding.medium))
-                Image(
-                    painter = painterResource(id = R.drawable.ic_health),
-                    contentDescription = null,
+                XImageNetwork(
+                    url = uiState.uiState.thumbnail,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(shape = RoundedCornerShape(10.dp)),

@@ -28,6 +28,10 @@ fun NavGraphBuilder.toDetailRoute(
                     DetailContract.Effect.back -> {
                         setEffect(DetailContract.Effect.Nav.back)
                     }
+
+                    DetailContract.Effect.fav -> {
+                        setEffect(DetailContract.Effect.Nav.fav)
+                    }
                 }
             }.collect()
         }

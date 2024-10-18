@@ -21,11 +21,16 @@ class DetailContract {
     )
     sealed interface Event{
         data object back : Event
+        data object fav: Event
     }
     sealed interface Effect{
         data object back : Effect
+        data object fav: Effect
+
         sealed interface Nav{
             data object back: Nav
+            data object fav: Nav
+
         }
     }
 }

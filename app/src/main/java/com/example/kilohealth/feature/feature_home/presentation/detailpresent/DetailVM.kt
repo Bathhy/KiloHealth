@@ -33,6 +33,12 @@ class DetailVM(
                     _effect.emit(DetailContract.Effect.back)
                 }
             }
+
+            DetailContract.Event.fav ->{
+                viewModelScope.launch {
+                    _effect.emit(DetailContract.Effect.fav)
+                }
+            }
         }
     }
     init {

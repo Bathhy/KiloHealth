@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.kilohealth.feature.favourite.presentation.FavouriteContract
+import com.example.kilohealth.feature.favourite.presentation.toFavRoute
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.DetailContract
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.toDetailRoute
 import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
@@ -54,11 +56,24 @@ fun RootNavGraph(navHostController: NavHostController, modifier: Modifier) {
         )
         toProfileRoute()
         toNotificationRoute()
+        toFavRoute(
+            setEffect = {
+                when(it){
+                    FavouriteContract.Effect.Nav.back -> {
+                        navHostController.popBackStack()
+                    }
+                }
+            }
+        )
         toDetailRoute(
             setEffect = {
                 when(it){
                     DetailContract.Effect.Nav.back -> {
                         navHostController.popBackStack()
+                    }
+
+                    DetailContract.Effect.Nav.fav -> {
+                        navHostController.navigate(Screen.Favorite.route)
                     }
                 }
             }
