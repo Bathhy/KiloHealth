@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -69,6 +70,7 @@ fun DetailMessageScreen(
     },
         bottomBar = {
             Row(
+                modifier = Modifier.navigationBarsPadding(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 XIcon(icon = painterResource(id = R.drawable.ic_photo_library), tint = healthTheme)

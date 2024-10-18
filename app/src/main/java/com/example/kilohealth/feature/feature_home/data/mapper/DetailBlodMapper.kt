@@ -1,8 +1,8 @@
 package com.example.kilohealth.feature.feature_home.data.mapper
 
+import androidx.core.text.HtmlCompat
 import com.example.kilohealth.feature.feature_home.data.response.DetailBlogResponse
 import com.example.kilohealth.feature.feature_home.domain.model.DetailBlogModel
-import org.jsoup.Jsoup
 
 fun DetailBlogResponse?.toDetailBlogModel()= DetailBlogModel(
     id = this?.id ?: 0,
@@ -21,5 +21,5 @@ fun DetailBlogResponse?.toDetailBlogModel()= DetailBlogModel(
 
 
 private fun parseHtml(html: String): String{
-    return Jsoup.parse(html).text()
+    return HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
 }

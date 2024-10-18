@@ -6,7 +6,7 @@ import com.example.kilohealth.R
 import com.example.kilohealth.navigation.Screen
 
 data class PagerData(
-    val image: Int
+    val image: List<String>
 )
 
 data class BottomNavData(
@@ -26,11 +26,11 @@ internal object FakeData {
         BottomNavData(icon = R.drawable.ic_person, route = Screen.Profile.route)
 
     )
-    val pagerFakeData = listOf(
-        PagerData(R.drawable.deep),
-        PagerData(R.drawable.ic_health),
-        PagerData(R.drawable.deep), PagerData(R.drawable.ic_health)
-    )
+//    val pagerFakeData = listOf(
+//        PagerData(R.drawable.deep),
+//        PagerData(R.drawable.ic_health),
+//        PagerData(R.drawable.deep), PagerData(R.drawable.ic_health)
+//    )
 
     val cateFakeListData :SnapshotStateList<TabBarCategory> = mutableStateListOf(
         TabBarCategory("All"),

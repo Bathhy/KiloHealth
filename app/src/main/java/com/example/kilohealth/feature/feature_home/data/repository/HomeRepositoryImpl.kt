@@ -4,8 +4,10 @@ import android.util.Log
 import com.example.kilohealth.feature.feature_home.data.datasource.HomeDatasource
 import com.example.kilohealth.feature.feature_home.data.mapper.toBlogListModel
 import com.example.kilohealth.feature.feature_home.data.mapper.toDetailBlogModel
+import com.example.kilohealth.feature.feature_home.data.mapper.toInfoSliderModel
 import com.example.kilohealth.feature.feature_home.domain.model.BlogListModel
 import com.example.kilohealth.feature.feature_home.domain.model.DetailBlogModel
+import com.example.kilohealth.feature.feature_home.domain.model.InfoSliderModel
 
 import com.example.kilohealth.feature.feature_home.domain.repository.HomeRepository
 import org.koin.core.annotation.Factory
@@ -21,5 +23,9 @@ class HomeRepositoryImpl(
     override suspend fun getDetailBlog(id: Int): DetailBlogModel {
         Log.d("repoid", "getDetailBlog: $id")
         return homeDS.getDetailBlog(id).data.toDetailBlogModel()
+    }
+
+    override suspend fun getInfo(): InfoSliderModel {
+        return homeDS.getSlider().data.toInfoSliderModel()
     }
 }
