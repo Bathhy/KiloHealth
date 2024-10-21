@@ -38,15 +38,22 @@ class HomeVM(
     init {
         getBlogList()
     }
+    private fun isLoading(isLoad:Boolean){
+        _state.value = _state.value.copy(
+            isLoading = isLoad
+        )
+    }
     private fun getBlogList(){
         viewModelScope.launch {
             val res = getBlogListUS.invoke()
             val resp = getSliderUS.invoke()
            when(res){
                is Resource.Error -> {
+                   isLoading(true)
                    Log.d("err", "getBlogList:${res.error}")
                }
                is Resource.Success -> {
+                   isLoading(false)
                    Log.d("Slider", "getBlogList:${resp.slides}")
                    _state.value = _state.value.copy(
                        homeBlogState = res.data,

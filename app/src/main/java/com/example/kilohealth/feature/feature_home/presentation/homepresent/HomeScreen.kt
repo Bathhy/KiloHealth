@@ -1,16 +1,10 @@
 package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
-import android.util.Log
-import android.util.Patterns
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -57,21 +50,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.CachePolicy
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import coil3.request.error
-import coil3.request.placeholder
-import coil3.size.Size
 import com.example.kilohealth.R
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.data.TabBarCategory
@@ -80,7 +64,10 @@ import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
+import kotlin.OptIn
+import kotlin.Unit
 import kotlin.math.abs
+import kotlin.repeat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -302,7 +289,7 @@ private fun TopHomeScreen(pagerState: PagerState, uiState: HomeContract.State) {
                     val dynamicPadding = lerp(
                         start = 2.dp,
                         stop = XPadding.medium,
-                        fraction = (1f - abs(dotOffset)).coerceIn(0f, 1f)
+                        fraction = (1f - abs(dotOffset)).coerceIn(0f, 2f)
                     )
                     Box(
                         modifier = Modifier

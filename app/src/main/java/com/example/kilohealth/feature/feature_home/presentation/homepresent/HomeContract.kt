@@ -5,6 +5,7 @@ import com.example.kilohealth.feature.feature_home.domain.model.BlogListModel
 
 class HomeContract {
     data class State(
+        val isLoading: Boolean = false,
         val homeBlogState: List<BlogListModel> = emptyList(),
         val pagerState : PagerData = PagerData(image = listOf())
     )

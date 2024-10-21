@@ -1,6 +1,5 @@
 package com.example.kilohealth.networkconfig
 
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.annotation.Module
