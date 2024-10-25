@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kilohealth.R
+import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.x_component.XFontSize
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
@@ -33,7 +33,9 @@ import com.example.kilohealth.x_component.XText
 @Composable
 internal fun ProfileScreen() {
     Column(
-        modifier = Modifier.fillMaxSize().navigationBarsPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding(),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -47,17 +49,26 @@ internal fun ProfileScreen() {
 
         )
         Spacer(modifier = Modifier.height(XPadding.medium))
-        XText(text = "Nigga")
+        XText(
+            text = "Nigga",
+            fontWeight = FontWeight.Bold,
+            fontSize = XFontSize.ExtraLarge
+        )
+        Spacer(modifier = Modifier.height(XPadding.large))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = XPadding.extraLarge),
             horizontalArrangement = Arrangement.SpaceBetween
+
         ) {
-            repeat(3) {
+            repeat(FakeData.healthStatList.size) {
+                val healthStat = FakeData.healthStatList[it]
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.ic_heart_rate),
+                        painter = painterResource(id = healthStat.icon),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -65,13 +76,13 @@ internal fun ProfileScreen() {
                             .size(50.dp),
                     )
                     XText(
-                        text = "Heart Rate",
+                        text = healthStat.label,
                         color = Color.Blue,
                         fontWeight = FontWeight.Medium,
                         fontSize = XFontSize.Medium,
                     )
                     XText(
-                        text = "215bpm",
+                        text = healthStat.healthNumStat,
                         fontSize = XFontSize.Large,
                         color = Color.Blue,
                         fontWeight = FontWeight.Bold
@@ -79,10 +90,12 @@ internal fun ProfileScreen() {
                 }
             }
         }
-        repeat(6){
-            Column (
-                modifier = Modifier.padding(vertical = XPadding.large)
-            ){
+        Spacer(modifier = Modifier.height(XPadding.extraLarge))
+        repeat(6) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = XPadding.extraLarge, vertical = XPadding.large)
+            ) {
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -109,7 +122,7 @@ internal fun ProfileScreen() {
                 Box(
                     modifier = Modifier
 
-                        .background(MaterialTheme.colorScheme.secondary)
+                        .background(Color.LightGray)
                         .height(1.dp)
                         .fillMaxWidth()
 

@@ -20,6 +20,8 @@ class HealthNetworkModule {
     internal fun provideApiService(retrifit: Retrofit): ApiService {
         return retrifit.create(ApiService::class.java)
     }
+
+
 }
 
 object RetrofitService {

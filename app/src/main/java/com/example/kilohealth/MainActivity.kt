@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.kilohealth.feature.dashboard.DashBoardScreen
 import com.example.kilohealth.navigation.RootNavGraph
 import com.example.kilohealth.ui.theme.KiloHealthTheme
 

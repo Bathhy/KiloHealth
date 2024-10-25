@@ -91,6 +91,7 @@ fun FavouriteScreen(
                         .fillMaxWidth()
                 ){
                     XImageNetwork(
+                        error = R.drawable.health,
                         url = favItem.thumbnail,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier

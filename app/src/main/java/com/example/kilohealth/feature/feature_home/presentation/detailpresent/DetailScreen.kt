@@ -73,6 +73,7 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.height(XPadding.medium))
                 XImageNetwork(
                     url = uiState.uiState.thumbnail,
+                    error = R.drawable.health,
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(shape = RoundedCornerShape(10.dp)),

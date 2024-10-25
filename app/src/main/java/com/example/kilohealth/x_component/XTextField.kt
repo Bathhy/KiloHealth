@@ -32,6 +32,7 @@ import com.example.kilohealth.ui.theme.healthTheme
 
 @Composable
 fun XTextField(
+//    modifier: Modifier = Modifier,
     textstate: TextFieldValue,
     placeholder: String = "",
     onTextChange: (TextFieldValue) -> Unit = {},

@@ -2,12 +2,8 @@ package com.example.kilohealth.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.example.kilohealth.feature.favourite.presentation.FavouriteContract
 import com.example.kilohealth.feature.favourite.presentation.toFavRoute
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.DetailContract
@@ -22,7 +18,7 @@ import com.example.kilohealth.feature.notification.presentation.toNotificationRo
 import com.example.kilohealth.feature.profile.presentation.toProfileRoute
 
 @Composable
-fun HealthGraph(navHostController: NavHostController) {
+fun HealthGraph(navHostController: NavHostController, modifier: Modifier) {
 
     //val navHostController = rememberNavController()
     NavHost(

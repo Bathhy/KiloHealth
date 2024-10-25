@@ -14,20 +14,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.navigation.HealthGraph
-import com.example.kilohealth.navigation.RootNavGraph
 import com.example.kilohealth.navigation.Route
-import com.example.kilohealth.navigation.Screen
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
 import kotlinx.coroutines.launch
+
+fun NavGraphBuilder.toDashBoardScreen()=composable(
+    route = Route.HEALTH,
+    content = {
+        DashBoardScreen()
+    }
+)
+
 
 @Composable
 internal fun DashBoardScreen() {
@@ -42,6 +45,7 @@ internal fun DashBoardScreen() {
                     it.route == currentDestination
                 }) {
                 BottomAppBar(
+
                     modifier = Modifier.height(100.dp)
                 ) {
                     NavigationBar(
@@ -69,7 +73,8 @@ internal fun DashBoardScreen() {
                 }
             }
         }
-    ) { padding ->
-        HealthGraph(controller)
+    ) {
+        padding->
+        HealthGraph(controller, modifier = Modifier.padding(padding))
     }
 }
