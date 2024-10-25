@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,7 +63,7 @@ fun DetailMessageScreen(
     }
     val context = LocalContext.current
     val pickPhoto =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             if (uri != null) {
                 Log.d("DetailMessageScreen", "Selected image URI: $uri")
             }
@@ -108,7 +109,7 @@ fun DetailMessageScreen(
                     icon = painterResource(id = R.drawable.ic_photo_library),
                     tint = healthTheme,
                     modifier = Modifier.clickable {
-                        pickPhoto.launch("image/")
+                        pickPhoto.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
                     })
                 Spacer(modifier = Modifier.width(XPadding.large))
                 XIcon(

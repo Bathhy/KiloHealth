@@ -1,7 +1,11 @@
 package com.example.kilohealth.feature.profile.presentation
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,12 +31,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kilohealth.R
 import com.example.kilohealth.data.FakeData
+import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XFontSize
+import com.example.kilohealth.x_component.XIcon
+import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
 
 @Composable
-internal fun ProfileScreen() {
+internal fun ProfileScreen(
+    setEvent:(ProfileContract.Event)-> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,18 +49,26 @@ internal fun ProfileScreen() {
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_health),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .clip(shape = CircleShape)
-                .size(100.dp)
-
-        )
+        Box(
+            contentAlignment = Alignment.BottomEnd
+        ) {
+            XImageNetwork(
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .clip(shape = CircleShape)
+                    .size(100.dp),
+                url = "https://i.pinimg.com/564x/7f/25/12/7f251266ef27a9e490f44f764d899d57.jpg"
+            )
+            XIcon(
+                icon = painterResource(id = R.drawable.ic_camera),
+                tint = healthTheme,
+                modifier = Modifier.clickable {
+                    setEvent(ProfileContract.Event.openCamera)
+                })
+        }
         Spacer(modifier = Modifier.height(XPadding.medium))
         XText(
-            text = "Nigga",
+            text = "Goat",
             fontWeight = FontWeight.Bold,
             fontSize = XFontSize.ExtraLarge
         )
@@ -127,7 +145,7 @@ internal fun ProfileScreen() {
                         .fillMaxWidth()
 
                 ) {
-
+//                    pickPhoto.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo))
                 }
             }
         }
