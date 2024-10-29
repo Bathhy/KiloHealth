@@ -12,8 +12,6 @@ class GetBlogListUseCase (
     private val homeRepo: HomeRepository
 ){
     suspend fun invoke(): Resource<List<BlogListModel>> {
-        return apiHandler {
-            homeRepo.getBlogList()
-        }
+        return homeRepo.getBlogList()
     }
 }

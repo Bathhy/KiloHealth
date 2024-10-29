@@ -11,9 +11,11 @@ enum class EnumScreen {
     PROFILE,
     DETAIL,
     FAV,
-    BOTNAV
+    NAVIGATION
 }
 sealed class Screen(val route:String){
+    data object SignIn :Screen(EnumScreen.LOGIN.name)
+    data object SignUp :Screen(EnumScreen.SIGNUP.name)
     data object Splash : Screen(EnumScreen.SPLASH.name)
     data object DetailMessage : Screen(EnumScreen.DETAIL_MESSAGE.name)
     data object HOme: Screen(EnumScreen.HOME.name)
@@ -21,7 +23,7 @@ sealed class Screen(val route:String){
     data object Message: Screen(EnumScreen.MESSAGE.name)
     data object Profile: Screen(EnumScreen.PROFILE.name)
     data object Favorite: Screen(EnumScreen.FAV.name)
-    data object DashBoard: Screen(EnumScreen.BOTNAV.name)
+    data object DashBoard: Screen(EnumScreen.NAVIGATION.name)
     data class Detail(val id : Int): Screen(EnumScreen.DETAIL.name+"/{id}"){
         fun passId(id:Int):String{
             return EnumScreen.DETAIL.name +"/$id";

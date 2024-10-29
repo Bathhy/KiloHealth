@@ -1,8 +1,5 @@
 package com.example.kilohealth.feature.profile.presentation
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,16 +16,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import com.example.kilohealth.R
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.ui.theme.healthTheme
@@ -37,11 +42,22 @@ import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
+import java.util.Objects
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileScreen(
-    setEvent:(ProfileContract.Event)-> Unit
+    setEvent: (ProfileContract.Event) -> Unit,
+    state : ProfileContract.State
 ) {
+
+    val bottomSheetState = rememberStandardBottomSheetState(
+        skipHiddenState = false
+    )
+    var isShowBottom by
+    remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,7 +79,7 @@ internal fun ProfileScreen(
                 icon = painterResource(id = R.drawable.ic_camera),
                 tint = healthTheme,
                 modifier = Modifier.clickable {
-                    setEvent(ProfileContract.Event.openCamera)
+                    isShowBottom = true
                 })
         }
         Spacer(modifier = Modifier.height(XPadding.medium))
@@ -73,6 +89,36 @@ internal fun ProfileScreen(
             fontSize = XFontSize.ExtraLarge
         )
         Spacer(modifier = Modifier.height(XPadding.large))
+        if (isShowBottom) {
+            ModalBottomSheet(
+                onDismissRequest = { isShowBottom = false },
+                sheetState = bottomSheetState,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    XText("Choose an option", fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    XText(
+                        text = "Open Camera", color = healthTheme, fontSize = XFontSize.Large,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    XText(
+                        text = "Open Gallery",
+                        modifier = Modifier.clickable {
+                            setEvent(ProfileContract.Event.OpenGallery)
+                        },
+                        color = healthTheme,
+                        fontSize = XFontSize.Large,
+                        fontWeight = FontWeight.Medium
+
+                    )
+                }
+            }
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

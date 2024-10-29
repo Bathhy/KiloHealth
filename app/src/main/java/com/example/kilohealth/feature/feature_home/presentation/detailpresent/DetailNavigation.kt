@@ -24,12 +24,12 @@ fun NavGraphBuilder.toDetailRoute(
         LaunchedEffect(Unit) {
             detailVM.effect.onEach {
                 when (it) {
-                    DetailContract.Effect.back -> {
-                        setEffect(DetailContract.Effect.Nav.back)
+                    DetailContract.Effect.Back -> {
+                        setEffect(DetailContract.Effect.Nav.Back)
                     }
 
-                    DetailContract.Effect.fav -> {
-                        setEffect(DetailContract.Effect.Nav.fav)
+                    DetailContract.Effect.Fav -> {
+                        setEffect(DetailContract.Effect.Nav.Fav)
                     }
                 }
             }.collect()

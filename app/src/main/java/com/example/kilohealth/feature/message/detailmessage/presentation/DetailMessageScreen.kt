@@ -58,7 +58,7 @@ import com.example.kilohealth.x_component.XTextField
 fun DetailMessageScreen(
     setEvent: (DetailMessageContract.Event) -> Unit
 ) {
-    val messaageTFState = remember {
+    val messageState = remember {
         mutableStateOf(TextFieldValue(""))
     }
     val context = LocalContext.current
@@ -121,7 +121,7 @@ fun DetailMessageScreen(
                 XTextField(
 
                     placeholder = "Enter your Message",
-                    textstate = messaageTFState.value,
+                    textState = messageState.value,
 
                     trailingIcon = {
                         XIcon(

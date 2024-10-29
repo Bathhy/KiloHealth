@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetDetailBlogUseCase
+import com.example.kilohealth.networkconfig.Resource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -27,15 +28,15 @@ class DetailVM(
 
     fun onEvent(event: DetailContract.Event){
         when(event){
-            DetailContract.Event.back -> {
+            DetailContract.Event.Back -> {
                 viewModelScope.launch {
-                    _effect.emit(DetailContract.Effect.back)
+                    _effect.emit(DetailContract.Effect.Back)
                 }
             }
 
-            DetailContract.Event.fav ->{
+            DetailContract.Event.Fav ->{
                 viewModelScope.launch {
-                    _effect.emit(DetailContract.Effect.fav)
+                    _effect.emit(DetailContract.Effect.Fav)
                 }
             }
         }
@@ -46,10 +47,17 @@ class DetailVM(
     private fun getDetailBlog(){
         viewModelScope.launch {
             Log.d("getID", "getDetailBlog:$id")
-            val res = getDetailUS.invoke(id)
-            _state.value = _state.value.copy(
-                uiState = res
-            )
+            when(val res = getDetailUS.invoke(id)){
+                is Resource.Error -> {
+                    Log.d("ErrorVM", "getDetailBlog: ${res.error} ")
+                }
+                is Resource.Success ->{
+                    _state.value = _state.value.copy(
+                        uiState = res.data
+                    )
+                }
+            }
+
             Log.d("Detail", "getDetailBlog:${_state.value}")
         }
     }

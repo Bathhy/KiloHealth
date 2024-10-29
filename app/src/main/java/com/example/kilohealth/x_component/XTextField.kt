@@ -33,18 +33,18 @@ import com.example.kilohealth.ui.theme.healthTheme
 @Composable
 fun XTextField(
 //    modifier: Modifier = Modifier,
-    textstate: TextFieldValue,
+    textState: TextFieldValue,
     placeholder: String = "",
     onTextChange: (TextFieldValue) -> Unit = {},
     height: Dp = 50.dp,
     borderRounded: Dp = 5.dp,
     trailingIcon: @Composable (() -> Unit)? = null,
-    prefixicon : @Composable (() -> Unit)? = null,
+    prefixIcon : @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     borderColor: Color = Color.Black.copy(alpha = 0.5f),
     backgroundColor: Color = Color.White.copy(0.5f),
-    obsecuretext: Boolean = false,
-    validateinput: ((String)-> String?)? = null,
+    obSecureText: Boolean = false,
+    validateInput: ((String)-> String?)? = null,
     textStyle: TextStyle = TextStyle(
         fontSize = 13.sp,
         fontWeight = FontWeight.SemiBold,
@@ -70,18 +70,18 @@ fun XTextField(
 
             visualTransformation = visualTransformation,
             placeholder = {
-                if (textstate.text.isEmpty()) {
+                if (textState.text.isEmpty()) {
                     Text(text = placeholder, style = textStyle)
                 }
             },
-            leadingIcon = prefixicon,
+            leadingIcon = prefixIcon,
             trailingIcon = {
                 trailingIcon?.invoke()
             },
-            value = textstate,
+            value = textState,
             onValueChange = {
                 onTextChange(it)
-                currentErrorMessage= validateinput?.invoke(it.text)
+                currentErrorMessage= validateInput?.invoke(it.text)
             },
             modifier = Modifier
                 .fillMaxWidth()

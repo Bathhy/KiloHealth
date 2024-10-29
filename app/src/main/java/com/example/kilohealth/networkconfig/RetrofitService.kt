@@ -17,8 +17,8 @@ class HealthNetworkModule {
     }
 
     @Single
-    internal fun provideApiService(retrifit: Retrofit): ApiService {
-        return retrifit.create(ApiService::class.java)
+    internal fun provideApiService(myRetrofit: Retrofit): ApiService {
+        return myRetrofit.create(ApiService::class.java)
     }
 
 

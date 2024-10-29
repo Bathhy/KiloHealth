@@ -55,12 +55,12 @@ fun DetailScreen(
                         icon = painterResource(id = R.drawable.ic_back),
                         tint = Color.White,
                         modifier = Modifier.clickable {
-                            setEvent(DetailContract.Event.back)
+                            setEvent(DetailContract.Event.Back)
                         })
                 },
                 actions = {
                     XIcon(icon = Icons.Default.Favorite, tint = Color.White, modifier = Modifier.clickable {
-                        setEvent(DetailContract.Event.fav)
+                        setEvent(DetailContract.Event.Fav)
                     })
                 }
             )

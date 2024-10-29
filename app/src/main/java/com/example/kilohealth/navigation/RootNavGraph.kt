@@ -3,6 +3,7 @@ package com.example.kilohealth.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.example.kilohealth.feature.auth.presentation.toSignIn
 import com.example.kilohealth.feature.dashboard.toDashBoardScreen
 import com.example.kilohealth.feature.favourite.presentation.FavouriteContract
 import com.example.kilohealth.feature.favourite.presentation.toFavRoute
@@ -15,7 +16,6 @@ import com.example.kilohealth.feature.message.homemessage.presentation.MessageCo
 import com.example.kilohealth.feature.message.homemessage.presentation.toDetailMessageRoute
 import com.example.kilohealth.feature.message.homemessage.presentation.toMessageRoute
 import com.example.kilohealth.feature.notification.presentation.toNotificationRoute
-import com.example.kilohealth.feature.profile.presentation.toProfileRoute
 
 @Composable
 fun RootNavGraph(navHostController: NavHostController) {
@@ -23,23 +23,23 @@ fun RootNavGraph(navHostController: NavHostController) {
         navController = navHostController,
         startDestination = Route.SPLASH
     ) {
-
+toSignIn()
         SplashGraph(navHostController = navHostController)
        toDashBoardScreen(navHostController)
         toDetailRoute(
             setEffect = {
                 when(it){
-                    DetailContract.Effect.Nav.back -> {
+                    DetailContract.Effect.Nav.Back -> {
                         navHostController.popBackStack()
                     }
 
-                    DetailContract.Effect.Nav.fav -> {
+                    DetailContract.Effect.Nav.Fav -> {
                         navHostController.navigate(Screen.Favorite.route)
                     }
                 }
             }
         )
-        toProfileRoute()
+//        toProfileRoute()
         toNotificationRoute()
         toHomeRoute(
             setEffect = {

@@ -1,12 +1,7 @@
 package com.example.kilohealth.feature.profile.presentation
 
-import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil3.Uri
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,18 +18,25 @@ class ProfileVM : ViewModel() {
     val effect = _effect.asSharedFlow()
     fun onEvent(event: ProfileContract.Event) {
         when (event) {
-            ProfileContract.Event.openCamera -> {
+            ProfileContract.Event.OpenGallery -> {
                 viewModelScope.launch {
 //                    _effect.emit(ProfileContract.Effect.Nav.openCamera)
-//                    openCamera()
+//                    openBottomSheet()
                 }
             }
+
+            ProfileContract.Event.OpenBottomSheet -> {
+                viewModelScope.launch {
+                    openBottomSheet()
+                }
+            }
+
+            ProfileContract.Event.OpenCamera -> TODO()
         }
     }
-
-    private fun openCamera(){
+     fun openBottomSheet(){
         _state.value = _state.value.copy(
-            isOpenCamera = true
+            isBottomSheet = true
         )
     }
 

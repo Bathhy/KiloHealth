@@ -2,6 +2,7 @@ package com.example.kilohealth.app
 
 import android.app.Application
 import com.example.kilohealth.module.KiloHealthModule
+import com.example.kilohealth.module.localModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -13,7 +14,7 @@ class App : Application(){
         startKoin {
             androidLogger()
             androidContext(this@App)
-            modules(listOf(KiloHealthModule().module))
+            modules(listOf(KiloHealthModule().module, localModule))
         }
     }
 }

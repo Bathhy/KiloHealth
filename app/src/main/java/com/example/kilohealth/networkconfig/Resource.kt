@@ -1,6 +1,7 @@
 package com.example.kilohealth.networkconfig
 
 
+import android.util.Log
 import coil3.network.HttpException
 import java.io.IOException
 
@@ -45,14 +46,18 @@ suspend fun <T> apiHandler(
     return try {
         Resource.Success(apiCall())
     } catch (e:HttpException) {
+        Log.d("errorHttpExcep", "apiHandler:${e.response.code}")
         when (e.response.code) {
             404 -> Resource.Error(ErrorType.Api.NotFound)
+
             503 -> Resource.Error(ErrorType.Api.ServiceUnavailable)
             else -> Resource.Error(ErrorType.Api.Server)
         }
     } catch (e: IOException) {
+        Log.d("IOExcep", "apiHandler:${e.message}")
         Resource.Error(ErrorType.Api.Network)
     } catch (e: Exception) {
+        Log.d("Except", "apiHandler:${e.message}")
         Resource.Error(ErrorType.Unknown)
     }
 }

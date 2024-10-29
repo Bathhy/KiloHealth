@@ -3,10 +3,7 @@ package com.example.kilohealth.feature.dashboard
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomAppBar
@@ -17,7 +14,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -26,7 +27,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import coil3.Uri
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
 import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeScreen
@@ -37,9 +38,9 @@ import com.example.kilohealth.feature.message.homemessage.presentation.MessageVM
 import com.example.kilohealth.feature.notification.presentation.NotificationScreen
 import com.example.kilohealth.feature.profile.presentation.ProfileContract
 import com.example.kilohealth.feature.profile.presentation.ProfileScreen
+import com.example.kilohealth.feature.profile.presentation.ProfileVM
 import com.example.kilohealth.navigation.Route
 import com.example.kilohealth.navigation.Screen
-import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -59,6 +60,8 @@ internal fun DashBoardScreen(
     controller: NavHostController
 ) {
     val scope = rememberCoroutineScope()
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val cameraPermission = remember { mutableStateOf(false) }
     val navBackStackEntry = controller.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry.value?.destination?.route
     val pagerState = rememberPagerState {
@@ -68,6 +71,9 @@ internal fun DashBoardScreen(
         rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
 
         }
+    val openCamera = rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) {
+
+    }
     Scaffold(
         bottomBar = {
             if (true) {
@@ -137,17 +143,30 @@ internal fun DashBoardScreen(
 
                 2 -> {
                     NotificationScreen()
+
                 }
 
                 3 -> {
-
+                    val vm : ProfileVM = koinViewModel()
+                    val uiState = vm.uiState.collectAsState()
                     ProfileScreen(
+
+                        state = uiState.value,
                         setEvent = {
                             when (it) {
 
-                                ProfileContract.Event.openCamera -> {
+                                ProfileContract.Event.OpenGallery -> {
                                     pickPhoto.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageAndVideo))
 
+                                }
+
+                                ProfileContract.Event.OpenBottomSheet -> {
+                                    vm.openBottomSheet()
+                                }
+
+                                ProfileContract.Event.OpenCamera -> {
+//                                    imageUri = createImage
+//                                    openCamera.launch()
                                 }
                             }
                         }

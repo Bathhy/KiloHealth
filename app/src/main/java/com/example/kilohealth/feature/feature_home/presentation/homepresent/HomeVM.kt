@@ -37,6 +37,7 @@ class HomeVM(
 
     init {
         getBlogList()
+        getSlider()
     }
     private fun isLoading(isLoad:Boolean){
         _state.value = _state.value.copy(
@@ -46,7 +47,7 @@ class HomeVM(
     private fun getBlogList(){
         viewModelScope.launch {
             val res = getBlogListUS.invoke()
-            val resp = getSliderUS.invoke()
+
            when(res){
                is Resource.Error -> {
                    isLoading(true)
@@ -54,14 +55,29 @@ class HomeVM(
                }
                is Resource.Success -> {
                    isLoading(false)
-                   Log.d("Slider", "getBlogList:${resp.slides}")
                    _state.value = _state.value.copy(
                        homeBlogState = res.data,
-                       pagerState = resp.toUiPager()
+
                    )
+
                }
            }
+
             Log.d("datat", "getBlogList:${res}")
+        }
+    }
+    private fun getSlider(){
+        viewModelScope.launch {
+            when(val resp = getSliderUS.invoke()){
+                is Resource.Error -> {
+                    Log.d("errorSlider", "getBlogList:${resp.error}")
+                }
+                is Resource.Success -> {
+                    _state.value = _state.value.copy(
+                        pagerState = resp.data.toUiPager()
+                    )
+                }
+            }
         }
     }
 
