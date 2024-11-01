@@ -76,7 +76,7 @@ internal fun ProfileScreen(
                 url = "https://i.pinimg.com/564x/7f/25/12/7f251266ef27a9e490f44f764d899d57.jpg"
             )
             XIcon(
-                icon = painterResource(id = R.drawable.ic_camera),
+                icon =R.drawable.ic_camera,
                 tint = healthTheme,
                 modifier = Modifier.clickable {
                     isShowBottom = true

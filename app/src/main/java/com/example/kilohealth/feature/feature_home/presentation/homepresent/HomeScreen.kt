@@ -15,16 +15,22 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,6 +38,10 @@ import com.example.kilohealth.R
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XPadding
+import com.example.kilohealth.x_component.XPullToRefresh
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,16 +52,16 @@ fun HomeScreen(
     val pagerState = rememberPagerState {
         uiState.pagerState.image.size
     }
-//    val selectedTabIndex = remember {FakeData.cateFakeListData }
     val scrollState = rememberLazyGridState()
-
     val isScroll by remember {
         derivedStateOf {
             scrollState.firstVisibleItemIndex > 0
         }
     }
+    val swipeRefresh = rememberPullToRefreshState()
 
     Scaffold(
+
         topBar = {
             when (isScroll) {
                 true -> {
@@ -80,7 +90,7 @@ fun HomeScreen(
                         },
                         navigationIcon = {
                             XIcon(
-                                icon = painterResource(id = R.drawable.ic_health),
+                                icon = R.drawable.ic_health,
                                 modifier = Modifier.size(30.dp)
                             )
                         }
@@ -89,42 +99,58 @@ fun HomeScreen(
             }
         }
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            state = scrollState,
-            modifier = Modifier
-                .padding(it)
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-                .padding(horizontal = XPadding.extraLarge)
-                .navigationBarsPadding()
-        ) {
-            item(
-                span = {
-                    GridItemSpan(2)
-                }
-            ) {
-                TopHomeScreen(pagerState = pagerState , uiState)
-            }
-            item(
-                span = {
-                    GridItemSpan(2)
-                }
-            ) {
 
-                HomeTabBar()
+        Box(
+            modifier = Modifier.nestedScroll(swipeRefresh.nestedScrollConnection),
+        ) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                state = scrollState,
+                modifier = Modifier
+                    .padding(it)
+                    .background(MaterialTheme.colorScheme.background)
+                    .fillMaxSize()
+                    .padding(horizontal = XPadding.extraLarge)
+                    .navigationBarsPadding()
+
+            ) {
+                item(
+                    span = {
+                        GridItemSpan(2)
+                    }
+                ) {
+
+                    TopHomeScreen(pagerState = pagerState, uiState)
+                }
+                item(
+                    span = {
+                        GridItemSpan(2)
+                    }
+                ) {
+
+                    HomeTabBar()
+                }
+                items(uiState.homeBlogState.size) {
+                    val grid = uiState.homeBlogState[it]
+                    Spacer(modifier = Modifier.height(XPadding.large))
+                    GridCardHomeScreen(
+                        setEvent = {
+                            setEvent(HomeContract.Event.Detail(grid.id))
+                        },
+                        grid = grid
+                    )
+                }
+
             }
-            items(uiState.homeBlogState.size) {
-                val grid = uiState.homeBlogState[it]
-                Spacer(modifier = Modifier.height(XPadding.large))
-                GridCardHomeScreen(
-                    setEvent = {
-                        setEvent(HomeContract.Event.detail(grid.id))
-                    },
-                    grid = grid
-                )
-            }
+            XPullToRefresh(
+                swipeRefresh = swipeRefresh, setUpEvent = {
+                    setEvent(HomeContract.Event.IsRefresh)
+                },
+                modifier = Modifier.align(Alignment.TopCenter),
+                isRefreshState =uiState.refreshPage
+            )
         }
+
     }
 }
 

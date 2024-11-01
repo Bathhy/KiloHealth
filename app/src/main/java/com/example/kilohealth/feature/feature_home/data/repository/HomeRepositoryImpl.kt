@@ -25,6 +25,7 @@ class HomeRepositoryImpl(
     private val networkChecker: NetworkChecker
 
 ) : HomeRepository {
+
     override suspend fun getBlogList(): Resource<List<BlogListModel>> {
         return if (networkChecker.isNetworkAvailable()) {
             val remoteRes = apiHandler {

@@ -69,7 +69,7 @@ fun FavouriteScreen(
                 },
                 navigationIcon = {
                     XIcon(
-                        icon = painterResource(id = R.drawable.ic_back),
+                        icon = R.drawable.ic_back,
                         tint = Color.White,
                         modifier = Modifier.clickable {
                             setEvent(FavouriteContract.Event.back)

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import com.example.kilohealth.ui.theme.healthTheme
 
 @Composable
@@ -23,9 +24,9 @@ internal fun XIcon(
                 modifier = modifier
             )
         }
-        is Painter -> {
+        is Int -> {
             Icon(
-                painter = icon,
+                painter = painterResource(id = icon),
                 contentDescription = null,
                 tint = tint,
                 modifier = modifier

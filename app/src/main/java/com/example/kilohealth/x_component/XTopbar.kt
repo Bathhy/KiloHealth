@@ -22,7 +22,7 @@ fun XTopBar() {
         },
         navigationIcon = {
             XIcon(
-                icon = painterResource(id = R.drawable.person_img),
+                icon = R.drawable.person_img,
                 modifier = Modifier.size(30.dp)
             )
         }

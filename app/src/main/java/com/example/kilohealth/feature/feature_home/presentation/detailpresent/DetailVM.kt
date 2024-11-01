@@ -4,8 +4,10 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kilohealth.feature.feature_home.domain.model.DetailBlogModel
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetDetailBlogUseCase
 import com.example.kilohealth.networkconfig.Resource
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import kotlin.time.Duration.Companion.seconds
 
 @KoinViewModel
 class DetailVM(
@@ -39,10 +42,14 @@ class DetailVM(
                     _effect.emit(DetailContract.Effect.Fav)
                 }
             }
+
+            DetailContract.Event.RefreshDetailScreen -> {
+                refreshDetailScreen()
+            }
         }
     }
     init {
-        getDetailBlog()
+        refreshDetailScreen()
     }
     private fun getDetailBlog(){
         viewModelScope.launch {
@@ -50,6 +57,23 @@ class DetailVM(
             when(val res = getDetailUS.invoke(id)){
                 is Resource.Error -> {
                     Log.d("ErrorVM", "getDetailBlog: ${res.error} ")
+                    _state.value = _state.value.copy(
+                        uiState = DetailBlogModel(
+                            id = 5688,
+                            type = "Heaven",
+                            name = "Yen",
+                            description = "Nabil",
+                            content = "Lucky",
+                            thumbnail = "Andreana",
+                            views = 9870L,
+                            status = "Kendale",
+                            favorite = false,
+                            createdAt = "Dj",
+                            categories = listOf(),
+                            tags = listOf()
+
+                        )
+                    )
                 }
                 is Resource.Success ->{
                     _state.value = _state.value.copy(
@@ -59,6 +83,18 @@ class DetailVM(
             }
 
             Log.d("Detail", "getDetailBlog:${_state.value}")
+        }
+    }
+    private fun refreshDetailScreen(){
+        viewModelScope.launch {
+            _state.value = _state.value.copy(
+                isRefresh = true
+            )
+            delay(0.5.seconds)
+            getDetailBlog()
+            _state.value = _state.value.copy(
+                isRefresh = false
+            )
         }
     }
 }

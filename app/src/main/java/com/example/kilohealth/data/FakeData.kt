@@ -1,9 +1,12 @@
 package com.example.kilohealth.data
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.kilohealth.R
 import com.example.kilohealth.navigation.Screen
+import com.example.kilohealth.x_component.XIcon
 
 //data class Message(
 //    val author:String,
@@ -22,6 +25,7 @@ data class BottomNavData(
     val route: String
 )
 
+
 data class TabBarCategory(
     val label: String
 )
@@ -31,8 +35,16 @@ data class UserHealthStatus(
     val healthNumStat: String,
     val icon: Int
 )
+data class DetailIcon(
+    val icon: Any
+)
 
 internal object FakeData {
+val detailMediaIcon = listOf(
+    DetailIcon(icon = Icons.Default.Share),
+    DetailIcon(icon =R.drawable.ic_fb),
+    DetailIcon(icon =R.drawable.ic_telegram)
+)
     val messagesFake = listOf(
         Message(content = "Hello! How are you?", isSentByUser = false),
         Message(content = "I'm good, thanks! How about you?", isSentByUser = true),

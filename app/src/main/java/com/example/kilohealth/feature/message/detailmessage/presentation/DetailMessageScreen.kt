@@ -79,14 +79,14 @@ fun DetailMessageScreen(
                 )
             }, actions = {
                 XIcon(
-                    icon = painterResource(id = R.drawable.ic_phone_cal),
+                    icon = R.drawable.ic_phone_cal,
                     tint = healthTheme,
                     modifier = Modifier.clickable {
                         context.showToast()
                     })
                 Spacer(modifier = Modifier.width(XPadding.medium))
                 XIcon(
-                    icon = painterResource(id = R.drawable.ic_video),
+                    icon =R.drawable.ic_video,
                     tint = healthTheme,
                     modifier = Modifier.clickable {
                         context.showToast()
@@ -106,14 +106,14 @@ fun DetailMessageScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 XIcon(
-                    icon = painterResource(id = R.drawable.ic_photo_library),
+                    icon =R.drawable.ic_photo_library,
                     tint = healthTheme,
                     modifier = Modifier.clickable {
                         pickPhoto.launch(PickVisualMediaRequest(mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly))
                     })
                 Spacer(modifier = Modifier.width(XPadding.large))
                 XIcon(
-                    icon = painterResource(id = R.drawable.ic_voice),
+                    icon =R.drawable.ic_voice,
                     healthTheme,
                     modifier = Modifier.clickable {
                         context.showToast()
@@ -125,7 +125,7 @@ fun DetailMessageScreen(
 
                     trailingIcon = {
                         XIcon(
-                            icon = painterResource(id = R.drawable.ic_send),
+                            icon =R.drawable.ic_send,
                             tint = healthTheme
                         )
                     }

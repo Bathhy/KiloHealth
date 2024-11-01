@@ -98,7 +98,7 @@ internal fun DashBoardScreen(
                                         pagerState.animateScrollToPage(index)
                                     }
                                 }, icon = {
-                                    XIcon(icon = painterResource(id = bot.icon))
+                                    XIcon(icon = bot.icon)
                                 })
                         }
                     }
@@ -113,6 +113,7 @@ internal fun DashBoardScreen(
                     val vm: HomeVM = koinViewModel()
                     val uiState = vm.state.collectAsState()
                     LaunchedEffect(Unit) {
+
                         vm.effect.onEach {
                             when (it) {
                                 is HomeContract.Effect.detail -> {
