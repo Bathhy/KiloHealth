@@ -91,4 +91,9 @@ dependencies {
     implementation(libs.koin.annotations)
     ksp(libs.koin.ksp.compiler)
     implementation(libs.koin.androidx.compose)
+
+    //paging
+    val paging_version = "3.3.0"
+    implementation ("androidx.paging:paging-runtime:$paging_version")
+    implementation ("androidx.paging:paging-compose:1.0.0-alpha20")
 }

@@ -7,8 +7,9 @@ import com.example.kilohealth.data.PagerData
 import com.example.kilohealth.feature.feature_home.domain.model.InfoSliderModel
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetBlogListUseCase
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetSliderInfo
-import com.example.kilohealth.networkconfig.Resource
-import kotlinx.coroutines.async
+import com.example.kilohealth.networkconfig.ErrorType
+import com.example.kilohealth.networkconfig.MessageError
+import com.example.kilohealth.networkconfig.XResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,7 @@ class HomeVM(
         when (event) {
             is HomeContract.Event.Detail -> {
                 viewModelScope.launch {
-                    _effect.emit(HomeContract.Effect.detail(event.id))
+                    _effect.emit(HomeContract.Effect.Nav.Detail(event.id))
                 }
             }
 
@@ -58,17 +59,36 @@ class HomeVM(
             val res = getBlogListUS.invoke()
 
             when (res) {
-                is Resource.Error -> {
+                is XResource.Error -> {
                     isLoading(true)
                     Log.d("err", "getBlogList:${res.error}")
+                    when (res.error) {
+                        ErrorType.Api.Network -> {
+                            _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.NETWORK_ERROR))
+                        }
+
+                        ErrorType.Api.NotFound -> {
+                            _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.ERROR_NOT_FOUND))
+                        }
+                        ErrorType.Api.Server -> {
+                            _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.SERVER_ERROR))
+                        }
+                        ErrorType.Api.ServiceUnavailable -> {
+                            _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.SERVICE_UNAVAILABLE))
+                        }
+                        ErrorType.Unknown -> {
+                            _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.UNKNOWN_ERROR))
+                        }
+                    }
                 }
 
-                is Resource.Success -> {
+                is XResource.Success -> {
                     isLoading(false)
                     _state.value = _state.value.copy(
                         homeBlogState = res.data,
 
                         )
+
 
                 }
             }
@@ -80,14 +100,14 @@ class HomeVM(
     private fun getSlider() {
         viewModelScope.launch {
             when (val resp = getSliderUS.invoke()) {
-                is Resource.Error -> {
+                is XResource.Error -> {
                     Log.d("errorSlider", "getBlogList:${resp.error}")
                     _state.value = _state.value.copy(
                         pagerState = PagerData(image = listOf())
                     )
                 }
 
-                is Resource.Success -> {
+                is XResource.Success -> {
                     _state.value = _state.value.copy(
                         pagerState = resp.data.toUiPager()
                     )
@@ -109,6 +129,7 @@ class HomeVM(
 
         }
     }
+
 
 }
 

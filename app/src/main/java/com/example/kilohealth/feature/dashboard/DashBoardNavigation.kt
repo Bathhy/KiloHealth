@@ -1,5 +1,7 @@
 package com.example.kilohealth.feature.dashboard
 
+import android.content.Context
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,6 +23,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraphBuilder
@@ -41,6 +44,7 @@ import com.example.kilohealth.feature.profile.presentation.ProfileScreen
 import com.example.kilohealth.feature.profile.presentation.ProfileVM
 import com.example.kilohealth.navigation.Route
 import com.example.kilohealth.navigation.Screen
+import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -60,10 +64,6 @@ internal fun DashBoardScreen(
     controller: NavHostController
 ) {
     val scope = rememberCoroutineScope()
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val cameraPermission = remember { mutableStateOf(false) }
-    val navBackStackEntry = controller.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry.value?.destination?.route
     val pagerState = rememberPagerState {
         4
     }
@@ -71,9 +71,6 @@ internal fun DashBoardScreen(
         rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
 
         }
-    val openCamera = rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) {
-
-    }
     Scaffold(
         bottomBar = {
             if (true) {
@@ -88,11 +85,14 @@ internal fun DashBoardScreen(
                             NavigationBarItem(
                                 modifier = Modifier.height(90.dp),
                                 colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = Color.Unspecified,
-                                    indicatorColor = Color.Red,
-                                    unselectedIconColor = Color.Unspecified
+                                    selectedIconColor = Color.Red
+                                    ,
+
+                                    indicatorColor = Color.Unspecified,
+                                    unselectedIconColor = Color.LightGray,
+
                                 ),
-                                selected = currentDestination == bot.route,
+                                selected = pagerState.currentPage == index,
                                 onClick = {
                                     scope.launch {
                                         pagerState.animateScrollToPage(index)
@@ -107,18 +107,22 @@ internal fun DashBoardScreen(
         }
     ) { padding ->
 
-        HorizontalPager(state = pagerState) {
+        HorizontalPager(state = pagerState) { it ->
             when (it) {
                 0 -> {
+                    val context = LocalContext.current
                     val vm: HomeVM = koinViewModel()
                     val uiState = vm.state.collectAsState()
                     LaunchedEffect(Unit) {
 
                         vm.effect.onEach {
                             when (it) {
-                                is HomeContract.Effect.detail -> {
+                                is HomeContract.Effect.Nav.Detail -> {
                                     val route = Screen.Detail(id = it.id).passId(it.id)
                                     controller.navigate(route)
+                                }
+                                is HomeContract.Effect.Nav.ShowError -> {
+                                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT ).show()
                                 }
                             }
                         }.collect()

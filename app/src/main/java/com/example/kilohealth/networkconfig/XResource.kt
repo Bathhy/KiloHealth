@@ -27,9 +27,9 @@ sealed class ErrorType {
     }
 }
 
-sealed class Resource<T> {
-    data class Success<T>(val data: T) : Resource<T>()
-    data class Error<T>(val error: ErrorType) : Resource<T>()
+sealed class XResource<T> {
+    data class Success<T>(val data: T) : XResource<T>()
+    data class Error<T>(val error: ErrorType) : XResource<T>()
 }
 
 object MessageError {
@@ -42,22 +42,22 @@ object MessageError {
 
 suspend fun <T> apiHandler(
     apiCall: suspend () -> T
-): Resource<T> {
+): XResource<T> {
     return try {
-        Resource.Success(apiCall())
+        XResource.Success(apiCall())
     } catch (e:HttpException) {
         Log.d("errorHttpExcep", "apiHandler:${e.response.code}")
         when (e.response.code) {
-            404 -> Resource.Error(ErrorType.Api.NotFound)
+            404 -> XResource.Error(ErrorType.Api.NotFound)
 
-            503 -> Resource.Error(ErrorType.Api.ServiceUnavailable)
-            else -> Resource.Error(ErrorType.Api.Server)
+            503 -> XResource.Error(ErrorType.Api.ServiceUnavailable)
+            else -> XResource.Error(ErrorType.Api.Server)
         }
     } catch (e: IOException) {
         Log.d("IOExcep", "apiHandler:${e.message}")
-        Resource.Error(ErrorType.Api.Network)
+        XResource.Error(ErrorType.Api.Network)
     } catch (e: Exception) {
         Log.d("Except", "apiHandler:${e.message}")
-        Resource.Error(ErrorType.Unknown)
+        XResource.Error(ErrorType.Unknown)
     }
 }

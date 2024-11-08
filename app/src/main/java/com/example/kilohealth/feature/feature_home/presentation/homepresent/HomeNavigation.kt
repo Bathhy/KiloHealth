@@ -1,7 +1,9 @@
 package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
+import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.kilohealth.navigation.Screen
@@ -14,17 +16,20 @@ fun NavGraphBuilder.toHomeRoute(
 ) = composable(
     route = Screen.HOme.route,
     content = {
+        val context = LocalContext.current
         val vm: HomeVM = koinViewModel()
         val uiState = vm.state.collectAsState()
         LaunchedEffect(Unit) {
             vm.effect.onEach {
                 when (it) {
-                    is HomeContract.Effect.detail -> {
-                        val route = Screen.Detail(id = it.id)
-//                        Log.d("TAG", "toHomeRoute:${it.id}")
+                    is HomeContract.Effect.Nav.Detail -> {
+                        val route = Screen.Detail(it.id)
                         setEffect(
-                            HomeContract.Effect.Nav.detail(route.id)
+                            HomeContract.Effect.Nav.Detail(route.id)
                         )
+                    }
+                    is HomeContract.Effect.Nav.ShowError -> {
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT ).show()
                     }
                 }
             }.collect()

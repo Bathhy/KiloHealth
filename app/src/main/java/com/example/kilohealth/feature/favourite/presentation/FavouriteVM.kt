@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kilohealth.feature.favourite.domain.usecase.GetFavouriteListUseCase
-import com.example.kilohealth.networkconfig.Resource
+import com.example.kilohealth.networkconfig.XResource
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -42,11 +42,11 @@ class FavouriteVM(
         viewModelScope.launch {
             val res = getFavUS.invoke()
             when (res) {
-                is Resource.Error -> {
+                is XResource.Error -> {
                     Log.d("errFav", "getFavouriteList:${res.error}")
                 }
 
-                is Resource.Success -> {
+                is XResource.Success -> {
                     Log.d("succeFav", "getFavouriteList:${res.data}")
                     _state.value = _state.value.copy(
                         favState = res.data

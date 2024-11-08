@@ -13,11 +13,12 @@ class HomeContract {
     sealed interface Event{
         data class Detail(val id: Int): Event
         data object IsRefresh : Event
+
     }
     sealed interface Effect{
-        data class detail(val id: Int): Effect
-        sealed interface Nav{
-            data class detail(val id:Int) : Nav
+        sealed interface Nav:Effect{
+            data class Detail(val id: Int): Effect,Nav
+            data class ShowError(val message:String) : Effect
         }
     }
 }

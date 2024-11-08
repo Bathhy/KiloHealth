@@ -14,7 +14,7 @@ import com.example.kilohealth.feature.feature_home.domain.model.InfoSliderModel
 
 import com.example.kilohealth.feature.feature_home.domain.repository.HomeRepository
 import com.example.kilohealth.networkconfig.NetworkChecker
-import com.example.kilohealth.networkconfig.Resource
+import com.example.kilohealth.networkconfig.XResource
 import com.example.kilohealth.networkconfig.apiHandler
 import org.koin.core.annotation.Factory
 
@@ -26,29 +26,29 @@ class HomeRepositoryImpl(
 
 ) : HomeRepository {
 
-    override suspend fun getBlogList(): Resource<List<BlogListModel>> {
+    override suspend fun getBlogList(): XResource<List<BlogListModel>> {
         return if (networkChecker.isNetworkAvailable()) {
             val remoteRes = apiHandler {
                 homeDS.getBlogList().data.toBlogListModel()
             }
-            if(remoteRes is Resource.Success){
+            if(remoteRes is XResource.Success){
                 homeLocalDS.syncDataBlog(remoteRes.data.toLocalBlogListModel())
             }
             remoteRes
         }else{
             val localRes = homeLocalDS.getBlogList().toBlogListDomainModel()
-            Resource.Success(localRes)
+            XResource.Success(localRes)
         }
     }
 
-    override suspend fun getDetailBlog(id: Int): Resource<DetailBlogModel> {
+    override suspend fun getDetailBlog(id: Int): XResource<DetailBlogModel> {
         Log.d("repoid", "getDetailBlog: $id")
         return apiHandler {
             homeDS.getDetailBlog(id).data.toDetailBlogModel()
         }
     }
 
-    override suspend fun getInfo(): Resource<InfoSliderModel> {
+    override suspend fun getInfo(): XResource<InfoSliderModel> {
         return apiHandler {
             homeDS.getSlider().data.toInfoSliderModel()
         }

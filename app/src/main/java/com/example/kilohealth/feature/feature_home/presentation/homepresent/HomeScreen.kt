@@ -53,50 +53,57 @@ fun HomeScreen(
         uiState.pagerState.image.size
     }
     val scrollState = rememberLazyGridState()
-    val isScroll by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemIndex > 0
-        }
-    }
     val swipeRefresh = rememberPullToRefreshState()
 
     Scaffold(
 
         topBar = {
-            when (isScroll) {
-                true -> {
-                    TopAppBar(
-                        title = {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-
-                                    .padding(
-                                        horizontal = XPadding.extraLarge * 2,
-                                        vertical = XPadding.extraLarge
-                                    )
-                            ) {
-                                SearchBar()
-                            }
-                        },
+            TopAppBar(
+                title = { },
+                actions = {
+                    XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
+                },
+                navigationIcon = {
+                    XIcon(
+                        icon = R.drawable.ic_health,
+                        modifier = Modifier.size(30.dp)
                     )
                 }
-
-                false -> {
-                    TopAppBar(
-                        title = { },
-                        actions = {
-                            XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
-                        },
-                        navigationIcon = {
-                            XIcon(
-                                icon = R.drawable.ic_health,
-                                modifier = Modifier.size(30.dp)
-                            )
-                        }
-                    )
-                }
-            }
+            )
+//            when (isScroll) {
+//                true -> {
+//                    TopAppBar(
+//                        title = {
+//                            Box(
+//                                contentAlignment = Alignment.Center,
+//                                modifier = Modifier
+//
+//                                    .padding(
+//                                        horizontal = XPadding.extraLarge * 2,
+//                                        vertical = XPadding.extraLarge
+//                                    )
+//                            ) {
+//                                SearchBar()
+//                            }
+//                        },
+//                    )
+//                }
+//
+//                false -> {
+//                    TopAppBar(
+//                        title = { },
+//                        actions = {
+//                            XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
+//                        },
+//                        navigationIcon = {
+//                            XIcon(
+//                                icon = R.drawable.ic_health,
+//                                modifier = Modifier.size(30.dp)
+//                            )
+//                        }
+//                    )
+//                }
+//            }
         }
     ) {
 
@@ -140,6 +147,8 @@ fun HomeScreen(
                         grid = grid
                     )
                 }
+
+
 
             }
             XPullToRefresh(

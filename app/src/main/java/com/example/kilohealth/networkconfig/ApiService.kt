@@ -1,5 +1,6 @@
 package com.example.kilohealth.networkconfig
 
+import androidx.room.Query
 import com.example.kilohealth.feature.favourite.data.datasource.FavouriteEndPoint
 import com.example.kilohealth.feature.favourite.data.response.FavouriteListResponse
 import com.example.kilohealth.feature.feature_home.data.datasource.HomeEndPoint
@@ -11,7 +12,9 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET(HomeEndPoint.BLOG_LIST_ENDPOINT)
-    suspend fun getBlogList(): BaseResponse<List<BlogListResponse>?>
+    suspend fun getBlogList(
+//        @retrofit2.http.Query("page") page:Int
+    ): BaseResponse<List<BlogListResponse>?>
 
     @GET("${HomeEndPoint.BLOG_LIST_ENDPOINT}/{id}")
     suspend fun getDetailBlog(@Path("id") id: Int): BaseResponse<DetailBlogResponse?>

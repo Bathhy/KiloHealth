@@ -44,10 +44,11 @@ toSignIn()
         toHomeRoute(
             setEffect = {
                 when (it) {
-                    is HomeContract.Effect.Nav.detail -> {
+                    is HomeContract.Effect.Nav.Detail -> {
                         val route = Screen.Detail(id = id).passId(it.id)
                         navHostController.navigate(route)
                     }
+
                 }
             }
         )

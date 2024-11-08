@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kilohealth.feature.feature_home.domain.model.DetailBlogModel
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetDetailBlogUseCase
-import com.example.kilohealth.networkconfig.Resource
+import com.example.kilohealth.networkconfig.XResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,7 +55,7 @@ class DetailVM(
         viewModelScope.launch {
             Log.d("getID", "getDetailBlog:$id")
             when(val res = getDetailUS.invoke(id)){
-                is Resource.Error -> {
+                is XResource.Error -> {
                     Log.d("ErrorVM", "getDetailBlog: ${res.error} ")
                     _state.value = _state.value.copy(
                         uiState = DetailBlogModel(
@@ -75,7 +75,7 @@ class DetailVM(
                         )
                     )
                 }
-                is Resource.Success ->{
+                is XResource.Success ->{
                     _state.value = _state.value.copy(
                         uiState = res.data
                     )
