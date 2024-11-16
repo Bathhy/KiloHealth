@@ -20,6 +20,12 @@ data class PagerData(
     val image: List<String>
 )
 
+data class NotificationData(
+    val label: String,
+    val dateTime: String
+
+)
+
 data class BottomNavData(
     val icon: Int,
     val route: String
@@ -35,16 +41,48 @@ data class UserHealthStatus(
     val healthNumStat: String,
     val icon: Int
 )
+
 data class DetailIcon(
     val icon: Any
 )
 
 internal object FakeData {
-val detailMediaIcon = listOf(
-    DetailIcon(icon = Icons.Default.Share),
-    DetailIcon(icon =R.drawable.ic_fb),
-    DetailIcon(icon =R.drawable.ic_telegram)
-)
+
+    val notificationFakeData = listOf(
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+        NotificationData(
+            label = "Kon nek Cheu hz ",
+            dateTime = "Aug 12, 2020 at 12:08 PM"
+        ),
+    )
+    val detailMediaIcon = listOf(
+        DetailIcon(icon = Icons.Default.Share),
+        DetailIcon(icon = R.drawable.ic_fb),
+        DetailIcon(icon = R.drawable.ic_telegram)
+    )
     val messagesFake = listOf(
         Message(content = "Hello! How are you?", isSentByUser = false),
         Message(content = "I'm good, thanks! How about you?", isSentByUser = true),
@@ -62,8 +100,16 @@ val detailMediaIcon = listOf(
 
     )
     val healthStatList = listOf(
-        UserHealthStatus(label = "Heart rate", healthNumStat = "215bpm", icon = R.drawable.ic_heart_rate),
-        UserHealthStatus(label = "Calories", healthNumStat = "756cal", icon = R.drawable.ic_calories),
+        UserHealthStatus(
+            label = "Heart rate",
+            healthNumStat = "215bpm",
+            icon = R.drawable.ic_heart_rate
+        ),
+        UserHealthStatus(
+            label = "Calories",
+            healthNumStat = "756cal",
+            icon = R.drawable.ic_calories
+        ),
         UserHealthStatus(label = "Weight", healthNumStat = "103lbs", icon = R.drawable.ic_weight)
     )
 //    val pagerFakeData = listOf(

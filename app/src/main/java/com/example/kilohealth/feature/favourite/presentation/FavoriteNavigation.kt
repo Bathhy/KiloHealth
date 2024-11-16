@@ -19,7 +19,7 @@ fun NavGraphBuilder.toFavRoute(
         LaunchedEffect(Unit){
             vm.effect.onEach {
                 when(it){
-                    FavouriteContract.Effect.back -> setEffect(FavouriteContract.Effect.Nav.back)
+                    FavouriteContract.Effect.Nav.Back -> setEffect(FavouriteContract.Effect.Nav.Back)
                 }
             }.count()
         }

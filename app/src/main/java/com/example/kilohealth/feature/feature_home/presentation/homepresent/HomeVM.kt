@@ -1,12 +1,15 @@
 package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
 import android.util.Log
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kilohealth.data.PagerData
 import com.example.kilohealth.feature.feature_home.domain.model.InfoSliderModel
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetBlogListUseCase
+import com.example.kilohealth.feature.feature_home.domain.usecase.GetCategoryListUseCase
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetSliderInfo
+import com.example.kilohealth.feature.feature_home.domain.usecase.ToggleFavoriteUseCase
 import com.example.kilohealth.networkconfig.ErrorType
 import com.example.kilohealth.networkconfig.MessageError
 import com.example.kilohealth.networkconfig.XResource
@@ -23,7 +26,9 @@ import kotlin.time.Duration.Companion.seconds
 @KoinViewModel
 class HomeVM(
     private val getBlogListUS: GetBlogListUseCase,
-    private val getSliderUS: GetSliderInfo
+    private val getSliderUS: GetSliderInfo,
+    private val getCateUS: GetCategoryListUseCase,
+    private val toggleFav: ToggleFavoriteUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(HomeContract.State())
     val state = _state.asStateFlow()
@@ -41,11 +46,47 @@ class HomeVM(
             HomeContract.Event.IsRefresh -> {
                 refreshPage()
             }
+
+            HomeContract.Event.Favourite -> {
+                viewModelScope.launch {
+                    _effect.emit(HomeContract.Effect.Nav.Favourite)
+                }
+            }
+
+            is HomeContract.Event.ToggleFavourite -> {
+                toggleFavorite(event.index)
+            }
+
+            HomeContract.Event.Search ->{
+                viewModelScope.launch {
+                    _effect.emit(HomeContract.Effect.Nav.Search)
+                }
+            }
         }
     }
 
     init {
         refreshPage()
+        getCategory()
+    }
+
+    private fun getCategory() {
+        viewModelScope.launch {
+            when (val res = getCateUS.invoke()) {
+                is XResource.Error -> {
+                    _state.value = _state.value.copy(
+                        categoryState = emptyList()
+                    )
+                    Log.d("ErrorCategory", "getCategory:${res.error}")
+                }
+
+                is XResource.Success -> {
+                    _state.value = _state.value.copy(
+                        categoryState = res.data
+                    )
+                }
+            }
+        }
     }
 
     private fun isLoading(isLoad: Boolean) {
@@ -70,12 +111,15 @@ class HomeVM(
                         ErrorType.Api.NotFound -> {
                             _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.ERROR_NOT_FOUND))
                         }
+
                         ErrorType.Api.Server -> {
                             _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.SERVER_ERROR))
                         }
+
                         ErrorType.Api.ServiceUnavailable -> {
                             _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.SERVICE_UNAVAILABLE))
                         }
+
                         ErrorType.Unknown -> {
                             _effect.emit(HomeContract.Effect.Nav.ShowError(MessageError.UNKNOWN_ERROR))
                         }
@@ -85,7 +129,7 @@ class HomeVM(
                 is XResource.Success -> {
                     isLoading(false)
                     _state.value = _state.value.copy(
-                        homeBlogState = res.data,
+                        homeBlogState = res.data.toMutableStateList(),
 
                         )
 
@@ -127,6 +171,25 @@ class HomeVM(
 
             _state.value = _state.value.copy(refreshPage = false)
 
+        }
+    }
+
+    private fun toggleFavorite(index:Int){
+        val healthList = _state.value.homeBlogState
+        val oldHealthBlog = healthList[index]
+        val newHealthBlog = oldHealthBlog.copy(
+            favorite = !oldHealthBlog.favorite
+        )
+        healthList[index]= newHealthBlog
+        viewModelScope.launch {
+            when(val res = toggleFav.invoke(newHealthBlog.id)){
+                is XResource.Error -> {
+                    Log.d(" Error Fav", "toggleFavorite: ${res.error}")
+                }
+                is XResource.Success -> {
+                    Log.d("Succes Fav", "toggleFavorite: ${res.data}")
+                }
+            }
         }
     }
 

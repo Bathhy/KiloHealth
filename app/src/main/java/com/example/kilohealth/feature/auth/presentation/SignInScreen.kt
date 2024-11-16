@@ -43,7 +43,7 @@ fun NavGraphBuilder.toSignIn() = composable(
 @Composable
 fun SignInScreen() {
     val textFieldState = remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf("")
     }
     Scaffold {
         Column(

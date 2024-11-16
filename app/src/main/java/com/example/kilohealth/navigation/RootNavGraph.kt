@@ -11,11 +11,12 @@ import com.example.kilohealth.feature.feature_home.presentation.detailpresent.De
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.toDetailRoute
 import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
 import com.example.kilohealth.feature.feature_home.presentation.homepresent.toHomeRoute
+import com.example.kilohealth.feature.feature_home.presentation.searchpresentation.SearchContract
+import com.example.kilohealth.feature.feature_home.presentation.searchpresentation.toSearchRoute
 import com.example.kilohealth.feature.message.detailmessage.presentation.DetailMessageContract
 import com.example.kilohealth.feature.message.homemessage.presentation.MessageContract
 import com.example.kilohealth.feature.message.homemessage.presentation.toDetailMessageRoute
 import com.example.kilohealth.feature.message.homemessage.presentation.toMessageRoute
-import com.example.kilohealth.feature.notification.presentation.toNotificationRoute
 
 @Composable
 fun RootNavGraph(navHostController: NavHostController) {
@@ -40,7 +41,7 @@ toSignIn()
             }
         )
 //        toProfileRoute()
-        toNotificationRoute()
+//        toNotificationRoute()
         toHomeRoute(
             setEffect = {
                 when (it) {
@@ -49,6 +50,13 @@ toSignIn()
                         navHostController.navigate(route)
                     }
 
+                    HomeContract.Effect.Nav.Favourite -> {
+                        navHostController.navigate(Screen.Favorite.route)
+                    }
+
+                    HomeContract.Effect.Nav.Search -> {
+                        navHostController.navigate(Screen.Search.route)
+                    }
                 }
             }
         )
@@ -75,7 +83,17 @@ toSignIn()
         toFavRoute(
             setEffect = {
                 when(it){
-                    FavouriteContract.Effect.Nav.back -> {
+                    FavouriteContract.Effect.Nav.Back -> {
+                        navHostController.popBackStack()
+                    }
+                }
+            }
+        )
+        toSearchRoute(
+            setEffect = {
+                nav->
+                when(nav){
+                    SearchContract.Effect.Nav.Back -> {
                         navHostController.popBackStack()
                     }
                 }

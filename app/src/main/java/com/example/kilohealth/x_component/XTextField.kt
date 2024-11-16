@@ -33,9 +33,9 @@ import com.example.kilohealth.ui.theme.healthTheme
 @Composable
 fun XTextField(
 //    modifier: Modifier = Modifier,
-    textState: TextFieldValue,
+    textState: String,
     placeholder: String = "",
-    onTextChange: (TextFieldValue) -> Unit = {},
+    onTextChange: (String) -> Unit = {},
     height: Dp = 50.dp,
     borderRounded: Dp = 5.dp,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -70,7 +70,7 @@ fun XTextField(
 
             visualTransformation = visualTransformation,
             placeholder = {
-                if (textState.text.isEmpty()) {
+                if (textState.isEmpty()) {
                     Text(text = placeholder, style = textStyle)
                 }
             },
@@ -81,7 +81,7 @@ fun XTextField(
             value = textState,
             onValueChange = {
                 onTextChange(it)
-                currentErrorMessage= validateInput?.invoke(it.text)
+                currentErrorMessage= validateInput?.invoke(it)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -95,7 +95,8 @@ fun XTextField(
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = healthTheme,
                 unfocusedTextColor = Color.Transparent
-            )
+            ),
+
         )
 
     }

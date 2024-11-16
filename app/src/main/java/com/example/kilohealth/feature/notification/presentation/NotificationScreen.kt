@@ -2,6 +2,7 @@ package com.example.kilohealth.feature.notification.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kilohealth.R
+import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XFontSize
 import com.example.kilohealth.x_component.XPadding
@@ -37,7 +38,10 @@ import com.example.kilohealth.x_component.XText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun NotificationScreen() {
+internal fun NotificationScreen(
+    setEvent:(NotificationContract.Event) -> Unit,
+    uiState : NotificationContract.State
+) {
     Scaffold(
         topBar = {
 
@@ -64,26 +68,28 @@ internal fun NotificationScreen() {
                         text = "Clear All",
                         fontSize = XFontSize.Large,
                         fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.padding(end = XPadding.extraLarge),
+                        modifier = Modifier
+
+                            .padding(end = XPadding.extraLarge)
+                            .clickable {
+                                setEvent(NotificationContract.Event.ClearNotification)
+                            }
+                        ,
+
                     )
                 },
-                navigationIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_back),
-                        modifier = Modifier.padding(start = XPadding.extraLarge),
-                        contentDescription = null
-                    )
-                }
             )
         }
     ) {
         LazyColumn(
             modifier = Modifier
                 .padding(it)
-                .navigationBarsPadding()
+//                .navigationBarsPadding()
                 .fillMaxSize()
         ) {
-            items(10) {
+            items(uiState.notificationListData.size) {
+                notification->
+                val notificationData = uiState.notificationListData[notification]
                 Box(
                     modifier = Modifier.padding(
                         horizontal = XPadding.extraLarge,
@@ -102,10 +108,10 @@ internal fun NotificationScreen() {
                         )
                         Spacer(modifier = Modifier.width(XPadding.large))
                         Column {
-                            XText(text = "Peer learning works. By building robust")
+                            XText(text = notificationData.label)
                             Spacer(modifier = Modifier.height(XPadding.large))
                             XText(
-                                text = "Aug 12, 2020 at 12:08 PM",
+                                text = notificationData.dateTime,
                                 color = MaterialTheme.colorScheme.secondary
                             )
                         }

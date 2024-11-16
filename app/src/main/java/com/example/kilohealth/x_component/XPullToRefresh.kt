@@ -37,4 +37,5 @@ fun XPullToRefresh(
             swipeRefresh.endRefresh()
         }
     }
+
 }

@@ -59,7 +59,7 @@ fun DetailMessageScreen(
     setEvent: (DetailMessageContract.Event) -> Unit
 ) {
     val messageState = remember {
-        mutableStateOf(TextFieldValue(""))
+        mutableStateOf("")
     }
     val context = LocalContext.current
     val pickPhoto =

@@ -65,14 +65,7 @@ fun DetailScreen(
                             setEvent(DetailContract.Event.Back)
                         })
                 },
-                actions = {
-                    XIcon(
-                        icon = Icons.Default.Favorite,
-                        tint = Color.White,
-                        modifier = Modifier.clickable {
-                            setEvent(DetailContract.Event.Fav)
-                        })
-                }
+
             )
         }
     ) {

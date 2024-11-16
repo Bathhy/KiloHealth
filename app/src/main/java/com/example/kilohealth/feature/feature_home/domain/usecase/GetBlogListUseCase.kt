@@ -10,7 +10,7 @@ import org.koin.core.annotation.Single
 class GetBlogListUseCase (
     private val homeRepo: HomeRepository
 ){
-    suspend fun invoke(): XResource<List<BlogListModel>> {
-        return homeRepo.getBlogList()
+    suspend fun invoke(value:String?= null): XResource<List<BlogListModel>> {
+        return homeRepo.getBlogList(value = value)
     }
 }

@@ -23,6 +23,8 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -57,7 +59,11 @@ import kotlin.math.abs
 
 
 @Composable
- fun GridCardHomeScreen(setEvent: () -> Unit, grid: BlogListModel){
+fun GridCardHomeScreen(
+    setEvent: () -> Unit,
+    grid: BlogListModel,
+    onClickFavIcon: () -> Unit
+) {
     Box(
         modifier = Modifier
 
@@ -74,34 +80,66 @@ import kotlin.math.abs
             .clip(shape = RoundedCornerShape(XPadding.medium))
             .background(color = Color.White)
     ) {
-        Column(
-        ) {
-            Box(
-            ) {
-                XImageNetwork(
-                    url = grid.thumbnail,
-                    modifier = Modifier
-                        .height(80.dp)
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.Crop,
-                    error = R.drawable.health
-                )
+        Box(
+            contentAlignment = Alignment.TopEnd,
 
+            ) {
+            Column {
+                Box(
+                ) {
+                    XImageNetwork(
+                        url = grid.thumbnail,
+                        modifier = Modifier
+                            .height(80.dp)
+                            .fillMaxWidth(),
+                        contentScale = ContentScale.Crop,
+                        error = R.drawable.health
+                    )
+
+                }
+                XText(text = grid.name, color = Color.Black)
+                XText(
+                    text = grid.description,
+                    maxLines = 4,
+                    overflow = TextOverflow.Ellipsis,
+                    color = Color.Black
+                )
             }
-            XText(text = grid.name, color = Color.Black)
-            XText(
-                text = grid.description,
-                maxLines = 4,
-                overflow = TextOverflow.Ellipsis,
-                color = Color.Black
+            XIcon(
+                icon = when (grid.favorite) {
+                    true -> {
+                        Icons.Default.Favorite
+                    }
+
+                    false -> {
+                        Icons.Default.FavoriteBorder
+                    }
+                },
+                tint = when (grid.favorite) {
+                    true -> {
+                        healthTheme
+                    }
+
+                    false -> {
+                        Color.Unspecified
+                    }
+                },
+                modifier = Modifier
+                    .padding(XPadding.medium)
+                    .size(XPadding.extraLarge * 2)
+                    .clickable {
+                        onClickFavIcon()
+                    }
             )
         }
     }
 }
 
 @Composable
- fun HomeTabBar() {
-    val items = remember { mutableStateListOf(*FakeData.cateFakeListData.toTypedArray()) }
+fun HomeTabBar(
+    uiState: HomeContract.State
+) {
+//    val items = remember { mutableStateListOf(*FakeData.cateFakeListData.toTypedArray()) }
     var draggedItem by remember { mutableStateOf<TabBarCategory?>(null) }
     var dragOffset by remember { mutableStateOf(Offset.Zero) }
     val lazyRowState = rememberLazyListState()
@@ -111,9 +149,8 @@ import kotlin.math.abs
         Spacer(modifier = Modifier.height(XPadding.large))
 
         LazyRow {
-            items(items) { indx ->
-                val fakeCate = FakeData.cateFakeListData.indexOf(indx)
-                val valCate = FakeData.cateFakeListData[fakeCate]
+            items(uiState.categoryState.size) { index ->
+                val valCate = uiState.categoryState[index]
                 Box(
                     modifier = Modifier
                         .padding(horizontal = XPadding.medium)
@@ -135,17 +172,14 @@ import kotlin.math.abs
                         }
                 ) {
                     Column {
-                        Box(
-                            modifier = Modifier.size(100.dp)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.deep),
-                                contentDescription = null,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
-                        XText(text = "test${valCate.label}")
+                        XImageNetwork(
+                            url = valCate.icon,
+                            modifier = Modifier
+                                .height(XPadding.extraLarge * 5),
+                            contentScale = ContentScale.Crop,
+                            error = R.drawable.health
+                        )
+                        XText(text = valCate.name)
                     }
                 }
             }
@@ -155,9 +189,11 @@ import kotlin.math.abs
 }
 
 @Composable
- fun TopHomeScreen(pagerState: PagerState, uiState: HomeContract.State) {
+fun TopHomeScreen(pagerState: PagerState, uiState: HomeContract.State,setEvent: () -> Unit) {
     Column {
-        SearchBar()
+        SearchBar(
+            setEvent
+        )
         Spacer(modifier = Modifier.height(XPadding.large))
         Box(
             modifier = Modifier
@@ -167,7 +203,7 @@ import kotlin.math.abs
             HorizontalPager(state = pagerState) {
                 val data = uiState.pagerState.image[it]
                 AsyncImage(
-                    model =data,
+                    model = data,
                     contentDescription = null, modifier = Modifier
                         .fillMaxSize()
                         .clip(shape = RoundedCornerShape(10.dp)),
@@ -209,14 +245,20 @@ import kotlin.math.abs
 }
 
 @Composable
- fun SearchBar() {
+fun SearchBar(
+    setEvent: () -> Unit
+) {
     Box(
         modifier = Modifier
             .shadow(4.dp, shape = RoundedCornerShape(XPadding.medium))
             .clip(shape = RoundedCornerShape(XPadding.medium))
+
             .background(Color.White)
             .fillMaxWidth()
             .padding(XPadding.large)
+            .clickable {
+                setEvent()
+            }
 
     ) {
         Row(

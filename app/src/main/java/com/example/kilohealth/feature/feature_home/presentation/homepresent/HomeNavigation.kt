@@ -31,6 +31,14 @@ fun NavGraphBuilder.toHomeRoute(
                     is HomeContract.Effect.Nav.ShowError -> {
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT ).show()
                     }
+
+                    HomeContract.Effect.Nav.Favourite -> {
+                        setEffect(HomeContract.Effect.Nav.Favourite)
+                    }
+
+                    HomeContract.Effect.Nav.Search -> {
+                        setEffect(HomeContract.Effect.Nav.Search)
+                    }
                 }
             }.collect()
         }

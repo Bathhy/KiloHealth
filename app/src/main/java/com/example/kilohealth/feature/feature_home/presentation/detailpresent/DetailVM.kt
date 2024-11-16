@@ -37,11 +37,7 @@ class DetailVM(
                 }
             }
 
-            DetailContract.Event.Fav ->{
-                viewModelScope.launch {
-                    _effect.emit(DetailContract.Effect.Fav)
-                }
-            }
+
 
             DetailContract.Event.RefreshDetailScreen -> {
                 refreshDetailScreen()

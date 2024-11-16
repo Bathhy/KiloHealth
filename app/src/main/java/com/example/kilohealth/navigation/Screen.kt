@@ -11,7 +11,7 @@ enum class EnumScreen {
     PROFILE,
     DETAIL,
     FAV,
-    NAVIGATION
+    NAVIGATION,SEARCH
 }
 sealed class Screen(val route:String){
     data object SignIn :Screen(EnumScreen.LOGIN.name)
@@ -23,6 +23,7 @@ sealed class Screen(val route:String){
     data object Message: Screen(EnumScreen.MESSAGE.name)
     data object Profile: Screen(EnumScreen.PROFILE.name)
     data object Favorite: Screen(EnumScreen.FAV.name)
+    data object Search:Screen(EnumScreen.SEARCH.name)
     data object DashBoard: Screen(EnumScreen.NAVIGATION.name)
     data class Detail(val id : Int): Screen(EnumScreen.DETAIL.name+"/{id}"){
         fun passId(id:Int):String{

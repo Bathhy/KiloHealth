@@ -1,6 +1,7 @@
 package com.example.kilohealth.feature.feature_home.presentation.homepresent
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -61,7 +63,12 @@ fun HomeScreen(
             TopAppBar(
                 title = { },
                 actions = {
-                    XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
+                    XIcon(
+                        icon = Icons.Default.Favorite,
+                        tint = healthTheme,
+                        modifier = Modifier.clickable {
+                            setEvent(HomeContract.Event.Favourite)
+                        })
                 },
                 navigationIcon = {
                     XIcon(
@@ -118,7 +125,7 @@ fun HomeScreen(
                     .background(MaterialTheme.colorScheme.background)
                     .fillMaxSize()
                     .padding(horizontal = XPadding.extraLarge)
-                    .navigationBarsPadding()
+//                    .navigationBarsPadding()
 
             ) {
                 item(
@@ -127,7 +134,9 @@ fun HomeScreen(
                     }
                 ) {
 
-                    TopHomeScreen(pagerState = pagerState, uiState)
+                    TopHomeScreen(pagerState = pagerState, uiState, setEvent = {
+                        setEvent(HomeContract.Event.Search)
+                    })
                 }
                 item(
                     span = {
@@ -135,7 +144,7 @@ fun HomeScreen(
                     }
                 ) {
 
-                    HomeTabBar()
+                    HomeTabBar(uiState)
                 }
                 items(uiState.homeBlogState.size) {
                     val grid = uiState.homeBlogState[it]
@@ -144,10 +153,12 @@ fun HomeScreen(
                         setEvent = {
                             setEvent(HomeContract.Event.Detail(grid.id))
                         },
-                        grid = grid
+                        grid = grid,
+                        onClickFavIcon = {
+                            setEvent(HomeContract.Event.ToggleFavourite(it))
+                        }
                     )
                 }
-
 
 
             }
@@ -156,7 +167,7 @@ fun HomeScreen(
                     setEvent(HomeContract.Event.IsRefresh)
                 },
                 modifier = Modifier.align(Alignment.TopCenter),
-                isRefreshState =uiState.refreshPage
+                isRefreshState = uiState.refreshPage
             )
         }
 
@@ -164,15 +175,5 @@ fun HomeScreen(
 }
 
 
-@Preview
-@Composable
-private fun previewHome() {
-    HomeScreen(
-        setEvent = {
-
-        },
-        uiState = HomeContract.State()
-    )
-}
 
 

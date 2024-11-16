@@ -22,7 +22,6 @@ class DetailContract {
     )
     sealed interface Event{
         data object Back : Event
-        data object Fav: Event
         data object RefreshDetailScreen : Event
     }
     sealed interface Effect{

@@ -5,10 +5,12 @@ import com.example.kilohealth.feature.feature_home.data.datasource.HomeDatasourc
 import com.example.kilohealth.feature.feature_home.data.local.HomeLocalDataSource
 import com.example.kilohealth.feature.feature_home.data.mapper.toBlogListDomainModel
 import com.example.kilohealth.feature.feature_home.data.mapper.toBlogListModel
+import com.example.kilohealth.feature.feature_home.data.mapper.toCategoryModel
 import com.example.kilohealth.feature.feature_home.data.mapper.toDetailBlogModel
 import com.example.kilohealth.feature.feature_home.data.mapper.toInfoSliderModel
 import com.example.kilohealth.feature.feature_home.data.mapper.toLocalBlogListModel
 import com.example.kilohealth.feature.feature_home.domain.model.BlogListModel
+import com.example.kilohealth.feature.feature_home.domain.model.CategoryListModel
 import com.example.kilohealth.feature.feature_home.domain.model.DetailBlogModel
 import com.example.kilohealth.feature.feature_home.domain.model.InfoSliderModel
 
@@ -26,10 +28,10 @@ class HomeRepositoryImpl(
 
 ) : HomeRepository {
 
-    override suspend fun getBlogList(): XResource<List<BlogListModel>> {
+    override suspend fun getBlogList(value: String?): XResource<List<BlogListModel>> {
         return if (networkChecker.isNetworkAvailable()) {
             val remoteRes = apiHandler {
-                homeDS.getBlogList().data.toBlogListModel()
+                homeDS.getBlogList(value = value).data.toBlogListModel()
             }
             if(remoteRes is XResource.Success){
                 homeLocalDS.syncDataBlog(remoteRes.data.toLocalBlogListModel())
@@ -51,6 +53,18 @@ class HomeRepositoryImpl(
     override suspend fun getInfo(): XResource<InfoSliderModel> {
         return apiHandler {
             homeDS.getSlider().data.toInfoSliderModel()
+        }
+    }
+
+    override suspend fun getCategoryList(): XResource<List<CategoryListModel>> {
+        return apiHandler {
+            homeDS.getCategoryList().data.toCategoryModel()
+        }
+    }
+
+    override suspend fun toggleFavorite(id: Int): XResource<String> {
+        return apiHandler {
+            homeDS.toggleFavorite(id).data.orEmpty()
         }
     }
 }

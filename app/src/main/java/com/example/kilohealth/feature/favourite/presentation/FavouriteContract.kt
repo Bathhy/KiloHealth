@@ -5,15 +5,17 @@ import com.example.kilohealth.feature.favourite.domain.model.FavouriteListModel
 class FavouriteContract {
 
     data class State(
-        val favState : List<FavouriteListModel> = emptyList()
+        val favState : MutableList<FavouriteListModel> = mutableListOf()
+
     )
     sealed interface Event{
-        data object back: Event
+        data object Back: Event
+        data class RemoveFavorite(val id:Int):Event
     }
     sealed interface Effect{
-        data object back: Effect
-        sealed interface Nav{
-            data object back: Nav
+
+        sealed interface Nav:Effect{
+            data object Back: Effect,Nav
         }
     }
 }

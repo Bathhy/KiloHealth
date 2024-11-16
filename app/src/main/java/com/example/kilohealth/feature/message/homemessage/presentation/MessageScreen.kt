@@ -46,7 +46,7 @@ fun MessageScreen(
         XLazyColumn(
             modifier = Modifier
                 .padding(it)
-                .navigationBarsPadding()
+//                .navigationBarsPadding()
         ) {
             item {
                 XText(
@@ -105,7 +105,7 @@ fun MessageScreen(
                         )
                         Spacer(modifier = Modifier.width(XPadding.large))
                         Column {
-                            XText(text = "Dr nigga", fontWeight = FontWeight.Bold)
+                            XText(text = "Dr Leonard", fontWeight = FontWeight.Bold)
                             Row() {
                                 XText(text = "you:fuck you")
                                 XText(text = ".Justnow")

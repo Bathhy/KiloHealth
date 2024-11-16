@@ -5,7 +5,11 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.BottomAppBar
@@ -26,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -39,6 +44,7 @@ import com.example.kilohealth.feature.message.homemessage.presentation.MessageCo
 import com.example.kilohealth.feature.message.homemessage.presentation.MessageScreen
 import com.example.kilohealth.feature.message.homemessage.presentation.MessageVM
 import com.example.kilohealth.feature.notification.presentation.NotificationScreen
+import com.example.kilohealth.feature.notification.presentation.NotificationVM
 import com.example.kilohealth.feature.profile.presentation.ProfileContract
 import com.example.kilohealth.feature.profile.presentation.ProfileScreen
 import com.example.kilohealth.feature.profile.presentation.ProfileVM
@@ -46,6 +52,7 @@ import com.example.kilohealth.navigation.Route
 import com.example.kilohealth.navigation.Screen
 import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
+import com.example.kilohealth.x_component.XPadding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -73,41 +80,45 @@ internal fun DashBoardScreen(
         }
     Scaffold(
         bottomBar = {
-            if (true) {
-                BottomAppBar(
+            BottomAppBar(
 
-                    modifier = Modifier.height(100.dp)
+            ) {
+                NavigationBar(
+
                 ) {
-                    NavigationBar(
+                    FakeData.bottomNavFakeData.forEachIndexed { index, bot ->
+                        NavigationBarItem(
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = Color.Red,
 
-                    ) {
-                        FakeData.bottomNavFakeData.forEachIndexed { index, bot ->
-                            NavigationBarItem(
-                                modifier = Modifier.height(90.dp),
-                                colors = NavigationBarItemDefaults.colors(
-                                    selectedIconColor = Color.Red
-                                    ,
-
-                                    indicatorColor = Color.Unspecified,
-                                    unselectedIconColor = Color.LightGray,
+                                indicatorColor = Color.Unspecified,
+                                unselectedIconColor = Color.LightGray,
 
                                 ),
-                                selected = pagerState.currentPage == index,
-                                onClick = {
-                                    scope.launch {
-                                        pagerState.animateScrollToPage(index)
+                            selected = pagerState.currentPage == index,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }, icon = {
+                                XIcon(
+                                    icon = bot.icon, tint =
+                                    if (pagerState.currentPage == index) {
+                                        healthTheme
+                                    } else {
+                                        Color.LightGray
                                     }
-                                }, icon = {
-                                    XIcon(icon = bot.icon)
-                                })
-                        }
+                                )
+                            })
                     }
                 }
             }
         }
     ) { padding ->
-
-        HorizontalPager(state = pagerState) { it ->
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.padding(bottom = XPadding.extraLarge * 5)
+        ) { it ->
             when (it) {
                 0 -> {
                     val context = LocalContext.current
@@ -121,8 +132,17 @@ internal fun DashBoardScreen(
                                     val route = Screen.Detail(id = it.id).passId(it.id)
                                     controller.navigate(route)
                                 }
+
                                 is HomeContract.Effect.Nav.ShowError -> {
-                                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT ).show()
+                                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                                }
+
+                                HomeContract.Effect.Nav.Favourite ->{
+                                    controller.navigate(Screen.Favorite.route)
+                                }
+
+                                HomeContract.Effect.Nav.Search -> {
+                                    controller.navigate(Screen.Search.route)
                                 }
                             }
                         }.collect()
@@ -147,12 +167,17 @@ internal fun DashBoardScreen(
                 }
 
                 2 -> {
-                    NotificationScreen()
+                    val vm: NotificationVM = koinViewModel()
+                    val uiState = vm.state.collectAsState()
+                    NotificationScreen(
+                        setEvent = vm::onEvent,
+                        uiState.value
+                    )
 
                 }
 
                 3 -> {
-                    val vm : ProfileVM = koinViewModel()
+                    val vm: ProfileVM = koinViewModel()
                     val uiState = vm.uiState.collectAsState()
                     ProfileScreen(
 
