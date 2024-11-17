@@ -10,7 +10,7 @@ fun List<FavouriteListResponse>?.toFavouriteListModel()= this?.map {
         name = it.name ?: "",
         description = it.description ?:"",
         thumbnail = it.thumbnail ?: "",
-        favorite = it.favorite ?: false,
+        favorite = true,
         createdAt = it.createdAt ?: "",
         savedAt = it.savedAt ?: ""
     )

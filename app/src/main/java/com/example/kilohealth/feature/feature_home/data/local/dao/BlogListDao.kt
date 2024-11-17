@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.kilohealth.feature.feature_home.data.local.entity.BlogListEntity
-import retrofit2.http.GET
 
 @Dao
 interface BlogListDao{

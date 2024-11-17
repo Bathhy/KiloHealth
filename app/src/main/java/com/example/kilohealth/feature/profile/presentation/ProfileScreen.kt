@@ -29,11 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.content.FileProvider
 import com.example.kilohealth.R
 import com.example.kilohealth.data.FakeData
 import com.example.kilohealth.ui.theme.healthTheme
@@ -42,7 +40,6 @@ import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XText
-import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

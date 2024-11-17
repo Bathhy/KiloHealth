@@ -5,9 +5,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
 import com.example.kilohealth.ui.theme.healthTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

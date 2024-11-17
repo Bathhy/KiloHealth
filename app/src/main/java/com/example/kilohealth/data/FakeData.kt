@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.example.kilohealth.R
 import com.example.kilohealth.navigation.Screen
-import com.example.kilohealth.x_component.XIcon
 
 //data class Message(
 //    val author:String,

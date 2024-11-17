@@ -3,7 +3,6 @@ package com.example.kilohealth.feature.feature_home.presentation.searchpresentat
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kilohealth.feature.favourite.presentation.FavouriteContract
 import com.example.kilohealth.feature.feature_home.domain.usecase.GetBlogListUseCase
 import com.example.kilohealth.networkconfig.XResource
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,6 +39,12 @@ class SearchVM(
             }
             SearchContract.Event.ClearQuery -> {
                 clearQuery()
+            }
+
+            is SearchContract.Event.NavToDetail -> {
+                viewModelScope.launch {
+                    _effect.emit(SearchContract.Effect.Nav.NavToDetail(event.id))
+                }
             }
         }
     }

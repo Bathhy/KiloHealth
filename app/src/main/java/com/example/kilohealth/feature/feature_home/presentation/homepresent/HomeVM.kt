@@ -67,6 +67,7 @@ class HomeVM(
 
     init {
         refreshPage()
+        getBlogList()
         getCategory()
     }
 

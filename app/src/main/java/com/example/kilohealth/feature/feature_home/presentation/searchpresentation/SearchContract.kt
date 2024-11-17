@@ -13,10 +13,12 @@ class SearchContract {
         data class QuerySearch(val query:String): Event
         data object SearchBlog: Event
         data object ClearQuery:Event
+        data class NavToDetail(val id: Int):Event
     }
     sealed interface Effect{
         sealed interface Nav: Effect{
             data object Back:Nav,Effect
+            data class NavToDetail(val id: Int):Nav,Effect
         }
     }
 }

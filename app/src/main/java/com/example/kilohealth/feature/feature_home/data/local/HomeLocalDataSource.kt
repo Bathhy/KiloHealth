@@ -1,6 +1,5 @@
 package com.example.kilohealth.feature.feature_home.data.local
 
-import com.example.kilohealth.feature.feature_home.data.local.dao.BlogListDao
 import com.example.kilohealth.feature.feature_home.data.local.entity.BlogListEntity
 
 interface HomeLocalDataSource{

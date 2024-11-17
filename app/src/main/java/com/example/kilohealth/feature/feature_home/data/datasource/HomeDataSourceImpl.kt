@@ -1,18 +1,13 @@
 package com.example.kilohealth.feature.feature_home.data.datasource
 
 import android.util.Log
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.example.kilohealth.feature.feature_home.data.response.BlogListResponse
 import com.example.kilohealth.feature.feature_home.data.response.CategoryListResponse
 import com.example.kilohealth.feature.feature_home.data.response.DetailBlogResponse
 import com.example.kilohealth.feature.feature_home.data.response.InfoSliderResponse
 import com.example.kilohealth.networkconfig.ApiService
 import com.example.kilohealth.networkconfig.BaseResponse
-import kotlinx.coroutines.flow.Flow
 import org.koin.core.annotation.Single
-import kotlin.math.truncate
 
 @Single
 class HomeDataSourceImpl(

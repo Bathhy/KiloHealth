@@ -96,6 +96,11 @@ toSignIn()
                     SearchContract.Effect.Nav.Back -> {
                         navHostController.popBackStack()
                     }
+
+                    is SearchContract.Effect.Nav.NavToDetail -> {
+                        val route = Screen.Detail(id = id).passId(id = nav.id)
+                        navHostController.navigate(route)
+                    }
                 }
             }
         )

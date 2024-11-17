@@ -1,6 +1,5 @@
 package com.example.kilohealth.networkconfig
 
-import androidx.room.Query
 import com.example.kilohealth.feature.favourite.data.datasource.FavouriteEndPoint
 import com.example.kilohealth.feature.favourite.data.response.FavouriteListResponse
 import com.example.kilohealth.feature.feature_home.data.datasource.HomeEndPoint
@@ -11,7 +10,6 @@ import com.example.kilohealth.feature.feature_home.data.response.InfoSliderRespo
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.QueryMap
 
 interface ApiService {
     @GET(HomeEndPoint.BLOG_LIST_ENDPOINT)

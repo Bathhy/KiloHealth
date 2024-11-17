@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,6 +45,7 @@ fun MessageScreen(
         XLazyColumn(
             modifier = Modifier
                 .padding(it)
+
 //                .navigationBarsPadding()
         ) {
             item {
@@ -107,7 +107,7 @@ fun MessageScreen(
                         Column {
                             XText(text = "Dr Leonard", fontWeight = FontWeight.Bold)
                             Row() {
-                                XText(text = "you:fuck you")
+                                XText(text = "you:Hello Sir")
                                 XText(text = ".Justnow")
                             }
 

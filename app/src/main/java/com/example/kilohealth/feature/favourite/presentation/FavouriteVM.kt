@@ -34,7 +34,9 @@ class FavouriteVM(
                 }
             }
 
-            is FavouriteContract.Event.RemoveFavorite -> TODO()
+            is FavouriteContract.Event.RemoveFavorite -> {
+                removeFavourite(event.id)
+            }
         }
     }
 
