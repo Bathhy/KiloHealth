@@ -24,8 +24,8 @@ fun NavGraphBuilder.toMessageRoute(
         LaunchedEffect(Unit) {
             vm.effect.onEach {
                 when (it) {
-                    MessageContract.Effect.goToDeTailMessage -> {
-                        setEffect(MessageContract.Effect.Nav.goToDeTailMessage)
+                    MessageContract.Effect.GoToDeTailMessage -> {
+                        setEffect(MessageContract.Effect.Nav.GoToDeTailMessage)
                     }
                 }
             }.collect()

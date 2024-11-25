@@ -9,8 +9,7 @@ import com.example.kilohealth.feature.favourite.presentation.FavouriteContract
 import com.example.kilohealth.feature.favourite.presentation.toFavRoute
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.DetailContract
 import com.example.kilohealth.feature.feature_home.presentation.detailpresent.toDetailRoute
-import com.example.kilohealth.feature.feature_home.presentation.homepresent.HomeContract
-import com.example.kilohealth.feature.feature_home.presentation.homepresent.toHomeRoute
+//import com.example.kilohealth.feature.feature_home.presentation.homepresent.toHomeRoute
 import com.example.kilohealth.feature.feature_home.presentation.searchpresentation.SearchContract
 import com.example.kilohealth.feature.feature_home.presentation.searchpresentation.toSearchRoute
 import com.example.kilohealth.feature.message.detailmessage.presentation.DetailMessageContract
@@ -42,29 +41,29 @@ toSignIn()
         )
 //        toProfileRoute()
 //        toNotificationRoute()
-        toHomeRoute(
-            setEffect = {
-                when (it) {
-                    is HomeContract.Effect.Nav.Detail -> {
-                        val route = Screen.Detail(id = id).passId(it.id)
-                        navHostController.navigate(route)
-                    }
-
-                    HomeContract.Effect.Nav.Favourite -> {
-                        navHostController.navigate(Screen.Favorite.route)
-                    }
-
-                    HomeContract.Effect.Nav.Search -> {
-                        navHostController.navigate(Screen.Search.route)
-                    }
-                }
-            }
-        )
+//        toHomeRoute(
+//            setEffect = {
+//                when (it) {
+//                    is HomeContract.Effect.Nav.Detail -> {
+//                        val route = Screen.Detail(id = id).passId(it.id)
+//                        navHostController.navigate(route)
+//                    }
+//
+//                    HomeContract.Effect.Nav.Favourite -> {
+//                        navHostController.navigate(Screen.Favorite.route)
+//                    }
+//
+//                    HomeContract.Effect.Nav.Search -> {
+//                        navHostController.navigate(Screen.Search.route)
+//                    }
+//                }
+//            }
+//        )
         toMessageRoute(
             navHostController,
             setEffect = {
                 when (it) {
-                    MessageContract.Effect.Nav.goToDeTailMessage -> {
+                    MessageContract.Effect.Nav.GoToDeTailMessage -> {
                         navHostController.navigate(Screen.DetailMessage.route)
                     }
                 }

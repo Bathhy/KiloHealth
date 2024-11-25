@@ -24,7 +24,6 @@ class HomeDataSourceImpl(
 //                NetworkPagingSource(this)
 //            }
 //        ).flow
-        Log.d("url", "getBlogList:${value}")
         return api.getBlogList(value = value)
     }
 

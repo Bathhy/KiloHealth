@@ -50,6 +50,7 @@ import com.example.kilohealth.ui.theme.healthTheme
 import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XImageNetwork
 import com.example.kilohealth.x_component.XPadding
+import com.example.kilohealth.x_component.XPageCardShimmer
 import com.example.kilohealth.x_component.XText
 import kotlin.math.abs
 
@@ -185,58 +186,72 @@ fun HomeTabBar(
 }
 
 @Composable
-fun TopHomeScreen(pagerState: PagerState, uiState: HomeContract.State,setEvent: () -> Unit) {
+fun TopHomeScreen(pagerState: PagerState, uiState: HomeContract.State, setEvent: () -> Unit) {
     Column {
         SearchBar(
             setEvent
         )
         Spacer(modifier = Modifier.height(XPadding.large))
-        Box(
-            modifier = Modifier
-                .height(150.dp)
-                .fillMaxWidth()
-        ) {
-            HorizontalPager(state = pagerState) {
-                val data = uiState.pagerState.image[it]
-                AsyncImage(
-                    model = data,
-                    contentDescription = null, modifier = Modifier
-                        .fillMaxSize()
-                        .clip(shape = RoundedCornerShape(10.dp)),
-                    contentScale = ContentScale.FillBounds,
-                    error = painterResource(id = R.drawable.deep)
+        when (uiState.isLoading) {
+            true -> XPageCardShimmer()
+            false -> {
+                Box(
+                    modifier = Modifier
+                        .height(150.dp)
+                        .fillMaxWidth()
+                ) {
+                    HorizontalPager(state = pagerState) {
+                        val data = uiState.pagerState.image[it]
+                        AsyncImage(
+                            model = data,
+                            contentDescription = null, modifier = Modifier
+                                .fillMaxSize()
+                                .clip(shape = RoundedCornerShape(10.dp)),
+                            contentScale = ContentScale.FillBounds,
+                            error = painterResource(id = R.drawable.deep)
 
-                )
+                        )
 
-            }
-            Row(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                repeat(uiState.pagerState.image.size) { index ->
-                    val dotOffset =
-                        remember(pagerState.currentPage, pagerState.currentPageOffsetFraction) {
-                            (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
-                        }
-
-                    val dynamicPadding = lerp(
-                        start = 2.dp,
-                        stop = XPadding.medium,
-                        fraction = (1f - abs(dotOffset)).coerceIn(0f, 2f)
-                    )
-                    Box(
+                    }
+                    Row(
                         modifier = Modifier
-                            .padding(2.dp)
-                            .clip(CircleShape)
-                            .background(if (index == pagerState.currentPage) healthTheme else Color.LightGray)
-                            .padding(horizontal = dynamicPadding)
-                            .size(8.dp)
-                    )
+                            .align(Alignment.BottomCenter)
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        PagerIndicator(uiState, pagerState)
+                    }
+
                 }
             }
         }
+    }
+}
+
+@Composable
+fun PagerIndicator(uiState: HomeContract.State, pagerState: PagerState) {
+    repeat(uiState.pagerState.image.size) { index ->
+        val dotOffset =
+            remember(
+                pagerState.currentPage,
+                pagerState.currentPageOffsetFraction
+            ) {
+                (pagerState.currentPage - index) + pagerState.currentPageOffsetFraction
+            }
+
+        val dynamicPadding = lerp(
+            start = 2.dp,
+            stop = XPadding.medium,
+            fraction = (1f - abs(dotOffset)).coerceIn(0f, 2f)
+        )
+        Box(
+            modifier = Modifier
+                .padding(2.dp)
+                .clip(CircleShape)
+                .background(if (index == pagerState.currentPage) healthTheme else Color.LightGray)
+                .padding(horizontal = dynamicPadding)
+                .size(8.dp)
+        )
     }
 }
 

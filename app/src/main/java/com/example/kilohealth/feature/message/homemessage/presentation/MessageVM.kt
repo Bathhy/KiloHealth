@@ -15,9 +15,9 @@ class MessageVM : ViewModel(){
 
     fun onEvent(event: MessageContract.Event){
         when(event){
-            MessageContract.Event.goToDeTailMessage ->{
+            MessageContract.Event.GoToDeTailMessage ->{
                 viewModelScope.launch {
-                    _effect.emit(MessageContract.Effect.goToDeTailMessage)
+                    _effect.emit(MessageContract.Effect.GoToDeTailMessage)
                 }
             }
         }

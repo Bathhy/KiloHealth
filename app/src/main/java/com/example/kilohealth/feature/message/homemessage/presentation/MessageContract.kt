@@ -2,12 +2,12 @@ package com.example.kilohealth.feature.message.homemessage.presentation
 
 class MessageContract {
     sealed interface Event{
-        data object goToDeTailMessage: Event
+        data object GoToDeTailMessage: Event
     }
     sealed interface Effect{
-        data object goToDeTailMessage: Effect
+        data object GoToDeTailMessage: Effect
         sealed interface Nav{
-            data object goToDeTailMessage: Nav
+            data object GoToDeTailMessage: Nav
         }
     }
 

@@ -23,6 +23,7 @@ class HomeContract {
 
     }
     sealed interface Effect{
+
         sealed interface Nav:Effect{
             data class Detail(val id: Int): Effect,Nav
             data class ShowError(val message:String) : Effect

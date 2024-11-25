@@ -27,6 +27,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.example.kilohealth.R
 import com.example.kilohealth.ui.theme.healthTheme
+import com.example.kilohealth.x_component.XCardShimmer
 import com.example.kilohealth.x_component.XIcon
 import com.example.kilohealth.x_component.XPadding
 import com.example.kilohealth.x_component.XPullToRefresh
@@ -63,40 +64,6 @@ fun HomeScreen(
                     )
                 }
             )
-//            when (isScroll) {
-//                true -> {
-//                    TopAppBar(
-//                        title = {
-//                            Box(
-//                                contentAlignment = Alignment.Center,
-//                                modifier = Modifier
-//
-//                                    .padding(
-//                                        horizontal = XPadding.extraLarge * 2,
-//                                        vertical = XPadding.extraLarge
-//                                    )
-//                            ) {
-//                                SearchBar()
-//                            }
-//                        },
-//                    )
-//                }
-//
-//                false -> {
-//                    TopAppBar(
-//                        title = { },
-//                        actions = {
-//                            XIcon(icon = Icons.Default.Notifications, tint = healthTheme)
-//                        },
-//                        navigationIcon = {
-//                            XIcon(
-//                                icon = R.drawable.ic_health,
-//                                modifier = Modifier.size(30.dp)
-//                            )
-//                        }
-//                    )
-//                }
-//            }
         }
     ) {
 
@@ -132,19 +99,31 @@ fun HomeScreen(
 
                     HomeTabBar(uiState)
                 }
-                items(uiState.homeBlogState.size) {
-                    val grid = uiState.homeBlogState[it]
-                    Spacer(modifier = Modifier.height(XPadding.large))
-                    GridCardHomeScreen(
-                        setEvent = {
-                            setEvent(HomeContract.Event.Detail(grid.id))
-                        },
-                        grid = grid,
-                        onClickFavIcon = {
-                            setEvent(HomeContract.Event.ToggleFavourite(it))
-                        }
-                    )
-                }
+//                items(uiState.homeBlogState.size) {
+//                    XShimmer()
+//                }
+               when(uiState.isLoading){
+                   true -> {
+                     items(5){
+                         XCardShimmer()
+                     }
+                   }
+                   false -> {
+                       items(uiState.homeBlogState.size) {
+                           val grid = uiState.homeBlogState[it]
+                           Spacer(modifier = Modifier.height(XPadding.large))
+                           GridCardHomeScreen(
+                               setEvent = {
+                                   setEvent(HomeContract.Event.Detail(grid.id))
+                               },
+                               grid = grid,
+                               onClickFavIcon = {
+                                   setEvent(HomeContract.Event.ToggleFavourite(it))
+                               }
+                           )
+                       }
+                   }
+               }
 
 
             }

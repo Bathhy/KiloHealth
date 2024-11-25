@@ -1,5 +1,7 @@
 package com.example.kilohealth.networkconfig
 
+import android.util.Log
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.annotation.Module
@@ -25,31 +27,33 @@ class HealthNetworkModule {
 }
 
 object RetrofitService {
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
+
+    private val headerInterceptor = Interceptor { chain ->
+        chain.proceed(
+            chain.request()
+                .newBuilder()
+                .also {
+                    it.addHeader("X-User-ID", "669e142544e1c41ced9a737f")
+                }.build()
+        )
+    }
+    private val urlInterceptor = HttpLoggingInterceptor { message ->
+        Log.d(
+            "BaseURL",
+            "log:$message"
+        )
+    }.apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
-
-    private val headerInterceptor =
-        OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                chain.proceed(
-                    chain.request()
-                        .newBuilder()
-                        .also {
-                            it.addHeader("X-User-ID", "669e142544e1c41ced9a737f")
-                        }.build()
-                )
-
-            }
     private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
+        .addInterceptor(urlInterceptor)
+        .addInterceptor(headerInterceptor)
         .build()
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(NetworkConfigEndPoint.BASE_URL)
             .client(client)
-            .client(headerInterceptor.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

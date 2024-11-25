@@ -141,7 +141,7 @@ internal fun DashBoardScreen(
                     LaunchedEffect(Unit) {
                         vm.effect.onEach {
                             when (it) {
-                                MessageContract.Effect.goToDeTailMessage -> {
+                                MessageContract.Effect.GoToDeTailMessage -> {
                                     controller.navigate(Screen.DetailMessage.route)
                                 }
                             }

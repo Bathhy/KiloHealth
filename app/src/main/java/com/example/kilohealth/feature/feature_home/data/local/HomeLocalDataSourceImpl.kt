@@ -1,5 +1,6 @@
 package com.example.kilohealth.feature.feature_home.data.local
 
+import android.util.Log
 import com.example.kilohealth.feature.feature_home.data.local.dao.BlogListDao
 import com.example.kilohealth.feature.feature_home.data.local.entity.BlogListEntity
 
@@ -11,6 +12,7 @@ class HomeLocalDataSourceImpl(
     }
 
     override suspend fun saveBlogList(blog: List<BlogListEntity>) {
+        Log.d("blogLocal", "saveBlogList:$blog")
        return blogDao.insertBlogLocal(blog)
     }
 

@@ -82,7 +82,7 @@ fun MessageScreen(
                 Box(
                     modifier = Modifier
                         .clickable {
-                            setEvent(MessageContract.Event.goToDeTailMessage)
+                            setEvent(MessageContract.Event.GoToDeTailMessage)
                         }
                         .padding(vertical = XPadding.extraSmall)
                         .clip(shape = RoundedCornerShape(XPadding.large))
